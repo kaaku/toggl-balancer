@@ -1,14 +1,16 @@
-import React, {Component} from 'react';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import moment from 'moment';
-import './App.css';
-import ApiTokenForm from "./ApiTokenForm";
+import React, {Component} from 'react';
+
+import ApiTokenDialog from "./ApiTokenDialog";
 import DateEntry from "./DateEntry";
+import './App.css';
 
 class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {isLoaded: false, timeEntries: []};
+        this.state = {isLoaded: false, apiToken: '', timeEntries: []};
     }
 
     updateTimeEntries() {
@@ -31,19 +33,24 @@ class App extends Component {
     }
 
     render() {
-        const entriesByDate = this.state.timeEntries.reduce((result, entry) => {
-            const date = moment(entry.start).format('YYYY-MM-DD');
-            (result[date] = result[date] || []).push(entry);
-            return result;
-        }, {});
+        const entriesByDate = this.state.timeEntries
+            .sort((a, b) => a.start.localeCompare(b.start))
+            .reduce((result, entry) => {
+                const date = moment(entry.start).format('YYYY-MM-DD');
+                (result[date] = result[date] || []).push(entry);
+                return result;
+            }, {});
 
         return (
             <div>
-                <ApiTokenForm onSubmit={(apiToken) => this.setState({apiToken: apiToken})}/>
+                <CssBaseline/>
+                <ApiTokenDialog open={!this.state.apiToken}
+                                mandatory={!this.state.apiToken}
+                                onClose={apiToken => this.setState({apiToken: apiToken})}/>
                 {
                     Object.entries(entriesByDate)
-                        .sort((a, b) => a[0].localeCompare(b[0]))
-                        .map((entry) => <DateEntry key={entry[0]} date={entry[0]} timeEntries={entry[1]}/>)
+                        .map(entry =>
+                            <DateEntry key={entry[0]} date={entry[0]} timeEntries={entry[1]}/>)
                 }
                 {this.state.error && <div>{this.state.error}</div>}
             </div>
