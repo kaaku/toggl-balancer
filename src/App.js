@@ -48,6 +48,7 @@ class App extends Component {
                 <ApiTokenDialog open={!this.state.apiToken}
                                 mandatory={!this.state.apiToken}
                                 onClose={apiToken => this.setState({apiToken: apiToken})}/>
+                {this.state.timeEntries.length > 0 &&
                 <Grid container spacing={40}>
                     <Grid item xs={12} lg={6}>
                         <CalendarGrid year={2018} month={10} data={entriesByDate}/>
@@ -61,7 +62,7 @@ class App extends Component {
                     <Grid item xs={12} lg={6}>
                         <CalendarGrid year={2019} month={1} data={entriesByDate}/>
                     </Grid>
-                </Grid>
+                </Grid>}
                 {this.state.error && <div>{this.state.error}</div>}
             </div>
         );
