@@ -1,19 +1,21 @@
 import moment from "moment";
 import PropTypes from 'prop-types';
 import React from "react";
+import Typography from '@material-ui/core/Typography';
 
 const workDayDuration = moment.duration('7:30').asSeconds();
 
 const DateEntry = (props) => {
     const loggedTime = props.timeEntries.map(timeEntry => timeEntry.duration).reduce((a, b) => a + b, 0);
-    const delta = loggedTime - workDayDuration;
+    const delta = loggedTime === 0 ? null : (loggedTime - workDayDuration);
 
-    const loggedTimePretty = moment.utc(loggedTime * 1000).format('HH:mm:ss');
-    const deltaPretty = (delta < 0 ? '-' : '+') + moment.utc(Math.abs(delta) * 1000).format('HH:mm:ss');
+    const deltaPretty = !delta ? '-' : (delta < 0 ? '-' : '+') + moment.utc(Math.abs(delta) * 1000).format('H:mm');
+    const deltaColor = !delta ? 'textSecondary' : (delta < 0 ? 'error' : 'primary');
 
     return (
         <div>
-            {props.date}, {loggedTimePretty}, {deltaPretty}
+            <Typography variant='overline' gutterBottom>{moment(props.date).format('DD')}</Typography>
+            <Typography variant='h6' align='center' color={deltaColor}>{deltaPretty}</Typography>
         </div>
     );
 };

@@ -1,9 +1,10 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import React, {Component} from 'react';
 
 import ApiTokenDialog from "./ApiTokenDialog";
-import DateEntry from "./DateEntry";
+import {CalendarGrid} from "./CalendarGrid";
 import './App.css';
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
     }
 
     updateTimeEntries() {
-        fetch('https://www.toggl.com/api/v8/time_entries?start_date=2019-01-01T00%3A00%3A00%2B00%3A00', {
+        fetch('https://www.toggl.com/api/v8/time_entries?start_date=2018-10-01T00%3A00%3A00%2B00%3A00', {
             method: 'GET',
             headers: new Headers({
                 'Authorization': 'Basic ' + btoa(`${this.state.apiToken}:api_token`),
@@ -47,11 +48,20 @@ class App extends Component {
                 <ApiTokenDialog open={!this.state.apiToken}
                                 mandatory={!this.state.apiToken}
                                 onClose={apiToken => this.setState({apiToken: apiToken})}/>
-                {
-                    Object.entries(entriesByDate)
-                        .map(entry =>
-                            <DateEntry key={entry[0]} date={entry[0]} timeEntries={entry[1]}/>)
-                }
+                <Grid container spacing={40}>
+                    <Grid item xs={12} lg={6}>
+                        <CalendarGrid year={2018} month={10} data={entriesByDate}/>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <CalendarGrid year={2018} month={11} data={entriesByDate}/>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <CalendarGrid year={2018} month={12} data={entriesByDate}/>
+                    </Grid>
+                    <Grid item xs={12} lg={6}>
+                        <CalendarGrid year={2019} month={1} data={entriesByDate}/>
+                    </Grid>
+                </Grid>
                 {this.state.error && <div>{this.state.error}</div>}
             </div>
         );
