@@ -8,6 +8,7 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 
 class ApiTokenDialog extends Component {
 
@@ -65,4 +66,4 @@ ApiTokenDialog.defaultProps = {
     mandatory: false
 };
 
-export default ApiTokenDialog;
+export default withStyles({}, {withTheme: true})(ApiTokenDialog);

@@ -1,13 +1,28 @@
+import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
 import moment from "moment";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React, {Component} from "react";
 import Typography from '@material-ui/core/Typography';
+import {withStyles} from '@material-ui/core/styles';
 
 import DateEntry from "./DateEntry";
 
-export class CalendarGrid extends Component {
+const styles = theme => ({
+    root: {
+        padding: 20
+    },
+    calendarCell: {
+        padding: 10,
+        height: '100%'
+    },
+    disabled: {
+        backgroundColor: theme.palette.grey[200]
+    }
+});
+
+class CalendarGrid extends Component {
     constructor(props) {
         super(props);
         this.getDataForDate = this.getDataForDate.bind(this);
@@ -15,6 +30,8 @@ export class CalendarGrid extends Component {
     }
 
     render() {
+        const {classes} = this.props;
+
         const firstDayOfMonth = moment({year: this.props.year, month: this.props.month - 1, day: 1});
         const firstVisibleDay = moment(firstDayOfMonth).startOf('week');
         const lastDayOfMonth = moment(firstDayOfMonth).endOf('month').startOf('day');
@@ -30,7 +47,7 @@ export class CalendarGrid extends Component {
         }
 
         return (
-            <div style={{margin: '40px'}}>
+            <div className={classes.root}>
                 <Typography variant='h2' gutterBottom>
                     {firstDayOfMonth.format('MMMM')} {firstDayOfMonth.year()}
                 </Typography>
@@ -38,11 +55,10 @@ export class CalendarGrid extends Component {
                     <Grid container alignItems='stretch' spacing={16} key={moment(week[0]).week()}>
                         {week.map(date =>
                             <Grid item xs key={date}>
-                                <Paper style={{
-                                    padding: '10px',
-                                    height: '100%',
-                                    backgroundColor: this.isIncluded(date) ? '#fff' : '#ccc'
-                                }}>
+                                <Paper className={classNames(
+                                    classes.calendarCell,
+                                    {[classes.disabled]: !this.isIncluded(date)}
+                                )}>
                                     {this.isIncluded(date) &&
                                     <DateEntry date={date} timeEntries={this.props.data[date] || []}/>}
                                 </Paper>
@@ -70,3 +86,5 @@ CalendarGrid.propTypes = {
         component: PropTypes.element
     }).isRequired
 };
+
+export default withStyles(styles, {withTheme: true})(CalendarGrid);

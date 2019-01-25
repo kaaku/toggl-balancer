@@ -2,10 +2,11 @@ import moment from "moment";
 import PropTypes from 'prop-types';
 import React from "react";
 import Typography from '@material-ui/core/Typography';
+import { withStyles } from '@material-ui/core/styles';
 
 const workDayDuration = moment.duration('7:30').asSeconds();
 
-const DateEntry = (props) => {
+const DateEntry = props => {
     const loggedTime = props.timeEntries.map(timeEntry => timeEntry.duration).reduce((a, b) => a + b, 0);
     const delta = loggedTime === 0 ? null : (loggedTime - workDayDuration);
 
@@ -25,4 +26,4 @@ DateEntry.propTypes = {
     timeEntries: PropTypes.array.isRequired
 };
 
-export default DateEntry;
+export default withStyles({}, {withTheme: true})(DateEntry);

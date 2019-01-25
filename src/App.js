@@ -1,11 +1,18 @@
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import React, {Component} from 'react';
 
 import ApiTokenDialog from "./ApiTokenDialog";
-import {CalendarGrid} from "./CalendarGrid";
+import CalendarGrid from "./CalendarGrid";
 import './App.css';
+
+const theme = createMuiTheme({
+    typography: {
+        useNextVariants: true
+    }
+});
 
 class App extends Component {
 
@@ -43,7 +50,7 @@ class App extends Component {
             }, {});
 
         return (
-            <div>
+            <MuiThemeProvider theme={theme}>
                 <CssBaseline/>
                 <ApiTokenDialog open={!this.state.apiToken}
                                 mandatory={!this.state.apiToken}
@@ -64,7 +71,7 @@ class App extends Component {
                     </Grid>
                 </Grid>}
                 {this.state.error && <div>{this.state.error}</div>}
-            </div>
+            </MuiThemeProvider>
         );
     }
 }
