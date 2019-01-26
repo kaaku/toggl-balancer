@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core/styles";
 
 import ApiTokenDialog from "./ApiTokenDialog";
-import CalendarGrid from "./CalendarGrid";
+import MonthView from "./MonthView";
 
 class App extends Component {
 
@@ -49,16 +49,16 @@ class App extends Component {
                 {this.state.timeEntries.length > 0 &&
                 <Grid container spacing={40}>
                     <Grid item xs={12} lg={6}>
-                        <CalendarGrid year={2018} month={10} data={entriesByDate}/>
+                        <MonthView year={2018} month={10} data={entriesByDate}/>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <CalendarGrid year={2018} month={11} data={entriesByDate}/>
+                        <MonthView year={2018} month={11} data={entriesByDate}/>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <CalendarGrid year={2018} month={12} data={entriesByDate}/>
+                        <MonthView year={2018} month={12} data={entriesByDate}/>
                     </Grid>
                     <Grid item xs={12} lg={6}>
-                        <CalendarGrid year={2019} month={1} data={entriesByDate}/>
+                        <MonthView year={2019} month={1} data={entriesByDate}/>
                     </Grid>
                 </Grid>}
                 {this.state.error && <div>{this.state.error}</div>}

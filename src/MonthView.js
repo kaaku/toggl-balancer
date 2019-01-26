@@ -22,7 +22,7 @@ const styles = theme => ({
     }
 });
 
-class CalendarGrid extends Component {
+class MonthView extends Component {
     constructor(props) {
         super(props);
         this.getDataForDate = this.getDataForDate.bind(this);
@@ -78,7 +78,7 @@ class CalendarGrid extends Component {
     }
 }
 
-CalendarGrid.propTypes = {
+MonthView.propTypes = {
     year: PropTypes.number.isRequired,
     month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
     data: PropTypes.shape({
@@ -87,4 +87,4 @@ CalendarGrid.propTypes = {
     }).isRequired
 };
 
-export default withStyles(styles, {withTheme: true})(CalendarGrid);
+export default withStyles(styles, {withTheme: true})(MonthView);
