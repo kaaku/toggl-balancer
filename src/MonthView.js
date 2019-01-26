@@ -61,7 +61,7 @@ class MonthView extends Component {
                                         {moment(date).format('DD')}
                                     </Typography>
                                     {data[date] && data[date]}
-                                    {!data[date] && defaultContent}
+                                    {!data[date] && this.isIncluded(date) && defaultContent}
                                 </Paper>
                             </Grid>)}
                     </Grid>)
