@@ -1,10 +1,9 @@
-import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core/styles";
 
 import ApiTokenDialog from "./ApiTokenDialog";
-import MonthView from "./MonthView";
+import CalendarGrid from "./CalendarGrid";
 
 class App extends Component {
 
@@ -33,34 +32,15 @@ class App extends Component {
     }
 
     render() {
-        const entriesByDate = this.state.timeEntries
-            .sort((a, b) => a.start.localeCompare(b.start))
-            .reduce((result, entry) => {
-                const date = moment(entry.start).format('YYYY-MM-DD');
-                (result[date] = result[date] || []).push(entry);
-                return result;
-            }, {});
-
         return (
             <React.Fragment>
                 <ApiTokenDialog open={!this.state.apiToken}
                                 mandatory={!this.state.apiToken}
                                 onClose={apiToken => this.setState({apiToken: apiToken})}/>
                 {this.state.timeEntries.length > 0 &&
-                <Grid container spacing={40}>
-                    <Grid item xs={12} lg={6}>
-                        <MonthView year={2018} month={10} data={entriesByDate}/>
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <MonthView year={2018} month={11} data={entriesByDate}/>
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <MonthView year={2018} month={12} data={entriesByDate}/>
-                    </Grid>
-                    <Grid item xs={12} lg={6}>
-                        <MonthView year={2019} month={1} data={entriesByDate}/>
-                    </Grid>
-                </Grid>}
+                <CalendarGrid startDate={moment('2018-10-01')}
+                              endDate={moment()}
+                              timeEntries={this.state.timeEntries}/>}
                 {this.state.error && <div>{this.state.error}</div>}
             </React.Fragment>
         );

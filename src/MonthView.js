@@ -7,8 +7,6 @@ import React, {Component} from "react";
 import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 
-import DateEntry from "./DateEntry";
-
 const styles = theme => ({
     root: {
         padding: 20
@@ -30,7 +28,7 @@ class MonthView extends Component {
     }
 
     render() {
-        const {classes} = this.props;
+        const {data, defaultContent, classes} = this.props;
 
         const firstDayOfMonth = moment({year: this.props.year, month: this.props.month - 1, day: 1});
         const firstVisibleDay = moment(firstDayOfMonth).startOf('week');
@@ -52,18 +50,22 @@ class MonthView extends Component {
                     {firstDayOfMonth.format('MMMM')} {firstDayOfMonth.year()}
                 </Typography>
                 {weeks.map(week =>
-                    <Grid container alignItems='stretch' spacing={16} key={moment(week[0]).week()}>
+                    <Grid container spacing={16} key={moment(week[0]).week()}>
                         {week.map(date =>
                             <Grid item xs key={date}>
                                 <Paper className={classNames(
                                     classes.calendarCell,
                                     {[classes.disabled]: !this.isIncluded(date)}
                                 )}>
-                                    {this.isIncluded(date) &&
-                                    <DateEntry date={date} timeEntries={this.props.data[date] || []}/>}
+                                    <Typography variant='overline' gutterBottom>
+                                        {moment(date).format('DD')}
+                                    </Typography>
+                                    {data[date] && data[date]}
+                                    {!data[date] && defaultContent}
                                 </Paper>
                             </Grid>)}
-                    </Grid>)}
+                    </Grid>)
+                }
             </div>
         );
     }
@@ -82,9 +84,9 @@ MonthView.propTypes = {
     year: PropTypes.number.isRequired,
     month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
     data: PropTypes.shape({
-        date: PropTypes.string,
-        component: PropTypes.element
-    }).isRequired
+        date: PropTypes.element
+    }).isRequired,
+    defaultContent: PropTypes.element
 };
 
 export default withStyles(styles, {withTheme: true})(MonthView);
