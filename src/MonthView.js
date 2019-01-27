@@ -8,9 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import {withStyles} from '@material-ui/core/styles';
 
 const styles = theme => ({
-    root: {
-        padding: 20
-    },
     calendarCell: {
         padding: 10,
         height: '100%'
@@ -45,10 +42,7 @@ class MonthView extends Component {
         }
 
         return (
-            <div className={classes.root}>
-                <Typography variant='h2' gutterBottom>
-                    {firstDayOfMonth.format('MMMM')} {firstDayOfMonth.year()}
-                </Typography>
+            <React.Fragment>
                 {weeks.map(week =>
                     <Grid container spacing={16} key={moment(week[0]).week()}>
                         {week.map(date =>
@@ -66,7 +60,7 @@ class MonthView extends Component {
                             </Grid>)}
                     </Grid>)
                 }
-            </div>
+            </React.Fragment>
         );
     }
 

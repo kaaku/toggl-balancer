@@ -5,17 +5,14 @@ import Typography from "@material-ui/core/Typography";
 import {withStyles} from "@material-ui/core/styles";
 
 const Duration = (props) => {
-    const {time, useColors} = props;
+    const {duration, useColors, textProps} = props;
 
-    const sign = time === 0 ? '' : (time > 0 ? '+' : '-');
-    const duration = moment.duration(time, 'seconds');
-    const durationFormatted = Math.abs(Math.floor(duration.asHours())) + ':' +
-        Math.abs(duration.minutes()).toString().padStart(2, '0');
-    const textProps = {
-        variant: 'inherit'
-    };
+    const sign = duration === 0 ? '' : (duration > 0 ? '+' : '-');
+    const durationObj = moment.duration(Math.abs(duration), 'seconds');
+    const durationFormatted = Math.floor(durationObj.asHours()) + ':' +
+        durationObj.minutes().toString().padStart(2, '0');
     if (useColors) {
-        textProps.color = time < 0 ? 'error' : 'primary';
+        textProps.color = duration < 0 ? 'error' : 'primary';
     }
 
     return (
@@ -26,12 +23,14 @@ const Duration = (props) => {
 };
 
 Duration.propTypes = {
-    time: PropTypes.number.isRequired,
-    useColors: PropTypes.bool
+    duration: PropTypes.number.isRequired,
+    useColors: PropTypes.bool,
+    textProps: PropTypes.object
 };
 
 Duration.defaultProps = {
-    useColors: false
+    useColors: false,
+    textProps: {}
 };
 
 export default withStyles({}, {withTheme: true})(Duration);
