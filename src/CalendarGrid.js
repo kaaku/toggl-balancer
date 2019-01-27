@@ -27,7 +27,7 @@ const CalendarGrid = (props) => {
         const timeDiffsByDate = getTimeDiffsByDate(firstDayOfMonth, timeEntries);
         dataByMonth.push({
             firstDayOfMonth: firstDayOfMonth,
-            totalDiff: Object.values(timeDiffsByDate).reduce((result, diff) => result + diff),
+            totalDiff: Object.values(timeDiffsByDate).reduce((result, diff) => result + diff, 0),
             monthViewData: getMonthViewData(timeDiffsByDate)
         });
         firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
