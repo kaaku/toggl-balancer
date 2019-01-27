@@ -9,11 +9,11 @@ import {withStyles} from "@material-ui/core/styles";
 import Duration from "./Duration";
 
 const workDayDuration = moment.duration('7:30').asSeconds();
-const styles = {
+const styles = theme => ({
     root: {
-        padding: '3%'
+        padding: theme.spacing.unit * 10
     }
-};
+});
 
 const CalendarGrid = (props) => {
     const {startDate, endDate, timeEntries, classes} = props;
@@ -34,7 +34,7 @@ const CalendarGrid = (props) => {
     }
 
     return (
-        <Grid container spacing={40} className={classes.root}>
+        <Grid container justify='center' spacing={40} className={classes.root}>
             {dataByMonth.map(({firstDayOfMonth, totalDiff, monthViewData}) => (
                 <Grid item xs={12} lg={6} key={firstDayOfMonth.format('YYYY-MM')}>
                     <Grid container justify='space-between'>
