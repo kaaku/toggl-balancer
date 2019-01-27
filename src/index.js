@@ -1,3 +1,5 @@
+import MomentUtils from '@date-io/moment';
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -15,7 +17,9 @@ const theme = createMuiTheme({
 const root = () => (
     <MuiThemeProvider theme={theme}>
         <CssBaseline/>
-        <App/>
+        <MuiPickersUtilsProvider utils={MomentUtils}>
+            <App/>
+        </MuiPickersUtilsProvider>
     </MuiThemeProvider>
 );
 
