@@ -2,7 +2,7 @@
   "name": "toggl-balancer",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/kaaku/toggl-balancer",
+  "homepage": "https://kaaku.github.io/toggl-balancer",
   "dependencies": {
     "@date-io/moment": "^1.0.1",
     "@material-ui/core": "^3.9.0",
