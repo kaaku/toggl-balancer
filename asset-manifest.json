@@ -1,11 +1,11 @@
 {
-  "main.js": "/kaaku/toggl-balancer/static/js/main.d8252fce.chunk.js",
-  "main.js.map": "/kaaku/toggl-balancer/static/js/main.d8252fce.chunk.js.map",
-  "static/js/1.aee60a3b.chunk.js": "/kaaku/toggl-balancer/static/js/1.aee60a3b.chunk.js",
-  "static/js/1.aee60a3b.chunk.js.map": "/kaaku/toggl-balancer/static/js/1.aee60a3b.chunk.js.map",
-  "runtime~main.js": "/kaaku/toggl-balancer/static/js/runtime~main.9b6f90a3.js",
-  "runtime~main.js.map": "/kaaku/toggl-balancer/static/js/runtime~main.9b6f90a3.js.map",
-  "index.html": "/kaaku/toggl-balancer/index.html",
-  "precache-manifest.5c656615f047a29a85246571068dc64a.js": "/kaaku/toggl-balancer/precache-manifest.5c656615f047a29a85246571068dc64a.js",
-  "service-worker.js": "/kaaku/toggl-balancer/service-worker.js"
+  "main.js": "/toggl-balancer/static/js/main.51386c15.chunk.js",
+  "main.js.map": "/toggl-balancer/static/js/main.51386c15.chunk.js.map",
+  "static/js/1.aee60a3b.chunk.js": "/toggl-balancer/static/js/1.aee60a3b.chunk.js",
+  "static/js/1.aee60a3b.chunk.js.map": "/toggl-balancer/static/js/1.aee60a3b.chunk.js.map",
+  "runtime~main.js": "/toggl-balancer/static/js/runtime~main.60f01546.js",
+  "runtime~main.js.map": "/toggl-balancer/static/js/runtime~main.60f01546.js.map",
+  "index.html": "/toggl-balancer/index.html",
+  "precache-manifest.a90cfca74fa025a160a77a3dc7a0f481.js": "/toggl-balancer/precache-manifest.a90cfca74fa025a160a77a3dc7a0f481.js",
+  "service-worker.js": "/toggl-balancer/service-worker.js"
 }

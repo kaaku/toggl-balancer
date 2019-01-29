@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/kaaku/toggl-balancer/precache-manifest.5c656615f047a29a85246571068dc64a.js"
+  "/toggl-balancer/precache-manifest.a90cfca74fa025a160a77a3dc7a0f481.js"
 );
 
 workbox.clientsClaim();
@@ -28,7 +28,7 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.suppressWarnings();
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
-workbox.routing.registerNavigationRoute("/kaaku/toggl-balancer/index.html", {
+workbox.routing.registerNavigationRoute("/toggl-balancer/index.html", {
   
   blacklist: [/^\/_/,/\/[^\/]+\.[^\/]+$/],
 });
