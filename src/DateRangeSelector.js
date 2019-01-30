@@ -43,12 +43,14 @@ const quickSelections = [
 
 const DateRangeSelector = (props) => {
     const {startDate, endDate, onChange, classes} = props;
+    const currentYear = moment().year();
 
     return (
         <Paper className={classes.root}>
             <Grid container justify='space-evenly' spacing={40}>
                 <Grid item>
                     <DatePicker label='From'
+                                format={startDate && startDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
                                 value={startDate}
                                 maxDate={endDate}
                                 autoOk
@@ -57,6 +59,7 @@ const DateRangeSelector = (props) => {
                 </Grid>
                 <Grid item>
                     <DatePicker label='To'
+                                format={endDate && endDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
                                 value={endDate}
                                 minDate={startDate}
                                 autoOk
