@@ -9,8 +9,8 @@ function fetchTimeEntries(startDate, endDate, apiToken) {
         throw Error('API token is required');
     }
 
-    const start = !startDate ? null : moment(startDate);
-    const end = !endDate ? null : moment(endDate).add(1, 'day');
+    const start = !startDate ? null : moment(startDate).startOf('day');
+    const end = !endDate ? null : moment(endDate).add(1, 'day').startOf('day');
     if ((start && !start.isValid()) || (end && !end.isValid())) {
         throw Error('Start date and/or end date were invalid');
     }
