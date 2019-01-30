@@ -1,6 +1,6 @@
+import Button from "@material-ui/core/Button";
 import {DatePicker} from 'material-ui-pickers';
 import Grid from "@material-ui/core/Grid";
-import Link from "@material-ui/core/Link";
 import moment from "moment";
 import Paper from "@material-ui/core/Paper";
 import PropTypes from 'prop-types';
@@ -13,11 +13,6 @@ const styles = theme => ({
     },
     quickSelections: {
         marginTop: theme.spacing.unit * 2
-    },
-    quickSelection: {
-        '&:hover': {
-            color: theme.palette.primary.light
-        }
     }
 });
 
@@ -41,7 +36,7 @@ const quickSelections = [
         title: 'This year',
         getDateRange: () => ({
             startDate: moment().startOf('year'),
-            endDate: moment().endOf('year').startOf('day')
+            endDate: moment().endOf('month').startOf('day')
         })
     }
 ];
@@ -53,25 +48,28 @@ const DateRangeSelector = (props) => {
         <Paper className={classes.root}>
             <Grid container justify='space-evenly' spacing={40}>
                 <Grid item>
-                    <DatePicker value={startDate} label='From' autoOk disableFuture clearable
+                    <DatePicker label='From'
+                                value={startDate}
+                                maxDate={endDate}
+                                autoOk
+                                showTodayButton
                                 onChange={date => onChange({startDate: date, endDate})}/>
                 </Grid>
                 <Grid item>
-                    <DatePicker value={endDate} label='To' autoOk clearable
+                    <DatePicker label='To'
+                                value={endDate}
+                                minDate={startDate}
+                                autoOk
+                                showTodayButton
                                 onChange={date => onChange({startDate, endDate: date})}/>
                 </Grid>
             </Grid>
             <Grid container justify='space-evenly' spacing={40} className={classes.quickSelections}>
                 {quickSelections.map(selection =>
                     (<Grid item key={selection.title}>
-                        <Link onClick={() => onChange(selection.getDateRange())}
-                              component='button'
-                              underline='none'
-                              color='inherit'
-                              variant='body1'
-                              className={classes.quickSelection}>
+                        <Button onClick={() => onChange(selection.getDateRange())} size='small'>
                             {selection.title}
-                        </Link>
+                        </Button>
                     </Grid>))}
             </Grid>
         </Paper>
