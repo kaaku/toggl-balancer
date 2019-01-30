@@ -1,11 +1,10 @@
 import Grid from "@material-ui/core/Grid";
-import moment from 'moment';
 import React, {Component} from 'react';
 import {withStyles} from "@material-ui/core/styles";
 
 import ApiTokenDialog from "./ApiTokenDialog";
 import CalendarGrid from "./CalendarGrid";
-import DateRangeSelector from "./DateRangeSelector";
+import DateRangeSelector, {defaultDateRange} from "./DateRangeSelector";
 import {TimeEntryStore} from "./TimeEntryStore";
 
 const styles = theme => ({
@@ -18,12 +17,10 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
+        this.state = Object.assign({
             apiToken: '',
-            startDate: moment().startOf('month'),
-            endDate: moment().endOf('month').startOf('day'),
             timeEntries: []
-        };
+        }, defaultDateRange);
     }
 
     updateTimeEntries() {
