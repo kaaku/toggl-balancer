@@ -1,26 +1,26 @@
+import CssBaseline from '@material-ui/core/es/CssBaseline/CssBaseline';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
-import CssBaseline from "@material-ui/core/es/CssBaseline/CssBaseline";
 
 const theme = createMuiTheme({
-    typography: {
-        useNextVariants: true
-    }
+  typography: {
+    useNextVariants: true
+  }
 });
 
 const root = () => (
-    <MuiThemeProvider theme={theme}>
-        <CssBaseline/>
-        <MuiPickersUtilsProvider utils={MomentUtils}>
-            <App/>
-        </MuiPickersUtilsProvider>
-    </MuiThemeProvider>
+  <MuiThemeProvider theme={theme}>
+    <CssBaseline />
+    <MuiPickersUtilsProvider utils={MomentUtils}>
+      <App />
+    </MuiPickersUtilsProvider>
+  </MuiThemeProvider>
 );
 
 ReactDOM.render(root(), document.getElementById('root'));

@@ -1,86 +1,78 @@
 import classNames from 'classnames';
 import Grid from '@material-ui/core/Grid';
-import moment from "moment";
+import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
+import React from 'react';
 import Typography from '@material-ui/core/Typography';
-import {withStyles} from '@material-ui/core/styles';
+import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
-    calendarCell: {
-        padding: 10,
-        height: '100%'
-    },
-    disabled: {
-        backgroundColor: theme.palette.grey[200]
-    }
+  calendarCell: {
+    padding: 10,
+    height: '100%'
+  },
+  disabled: {
+    backgroundColor: theme.palette.grey[200]
+  }
 });
 
-class MonthView extends Component {
-    constructor(props) {
-        super(props);
-        this.getDataForDate = this.getDataForDate.bind(this);
-        this.isIncluded = this.isIncluded.bind(this);
-    }
+const MonthView = props => {
+  const { year, month, data, defaultContent, classes } = props;
 
-    render() {
-        const {data, defaultContent, classes} = this.props;
+  const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
+  const firstVisibleDay = moment(firstDayOfMonth).startOf('week');
+  const lastDayOfMonth = moment(firstDayOfMonth)
+    .endOf('month')
+    .startOf('day');
+  const lastVisibleDay = moment(lastDayOfMonth)
+    .endOf('week')
+    .startOf('day');
 
-        const firstDayOfMonth = moment({year: this.props.year, month: this.props.month - 1, day: 1});
-        const firstVisibleDay = moment(firstDayOfMonth).startOf('week');
-        const lastDayOfMonth = moment(firstDayOfMonth).endOf('month').startOf('day');
-        const lastVisibleDay = moment(lastDayOfMonth).endOf('week').startOf('day');
+  const dates = [];
+  const weeks = [];
+  const gridCellCount = Math.round(moment.duration(lastVisibleDay.diff(firstVisibleDay)).asDays()) + 1;
+  while (dates.length < gridCellCount) {
+    dates.push(
+      moment(firstVisibleDay)
+        .add(dates.length, 'days')
+        .format('YYYY-MM-DD')
+    );
+  }
+  while (dates.length > 0) {
+    weeks.push(dates.splice(0, 7));
+  }
 
-        const dates = [], weeks = [];
-        const gridCellCount = Math.round(moment.duration(lastVisibleDay.diff(firstVisibleDay)).asDays()) + 1;
-        while (dates.length < gridCellCount) {
-            dates.push(moment(firstVisibleDay).add(dates.length, 'days').format('YYYY-MM-DD'));
-        }
-        while (dates.length > 0) {
-            weeks.push(dates.splice(0, 7));
-        }
-
-        return (
-            <React.Fragment>
-                {weeks.map(week =>
-                    <Grid container spacing={16} key={moment(week[0]).week()}>
-                        {week.map(date =>
-                            <Grid item xs key={date}>
-                                <Paper className={classNames(
-                                    classes.calendarCell,
-                                    {[classes.disabled]: !this.isIncluded(date)}
-                                )}>
-                                    <Typography variant='overline' gutterBottom>
-                                        {moment(date).format('DD')}
-                                    </Typography>
-                                    {data[date] && data[date]}
-                                    {!data[date] && this.isIncluded(date) && defaultContent}
-                                </Paper>
-                            </Grid>)}
-                    </Grid>)
-                }
-            </React.Fragment>
-        );
-    }
-
-    isIncluded(date) {
-        return moment(date).month() + 1 === this.props.month;
-    }
-
-    getDataForDate(date) {
-        return !this.props.data[date] ? '' :
-            this.props.data[date].reduce((result, entry) => result + entry.duration, 0);
-    }
-}
-
-MonthView.propTypes = {
-    year: PropTypes.number.isRequired,
-    month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
-    data: PropTypes.shape({
-        date: PropTypes.element
-    }).isRequired,
-    defaultContent: PropTypes.element
+  return (
+    <React.Fragment>
+      {weeks.map(week => (
+        <Grid container spacing={16} key={moment(week[0]).week()}>
+          {week.map(date => (
+            <Grid item xs key={date}>
+              <Paper
+                className={classNames(classes.calendarCell, { [classes.disabled]: moment(date).month() + 1 !== month })}
+              >
+                <Typography variant="overline" gutterBottom>
+                  {moment(date).format('DD')}
+                </Typography>
+                {data[date] && data[date]}
+                {!data[date] && moment(date).month() + 1 === month && defaultContent}
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      ))}
+    </React.Fragment>
+  );
 };
 
-export default withStyles(styles, {withTheme: true})(MonthView);
+MonthView.propTypes = {
+  year: PropTypes.number.isRequired,
+  month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
+  data: PropTypes.shape({
+    date: PropTypes.element
+  }).isRequired,
+  defaultContent: PropTypes.element
+};
+
+export default withStyles(styles, { withTheme: true })(MonthView);

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, {Component} from "react";
+import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -11,59 +11,63 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
 class ApiTokenDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { apiToken: '' };
 
-    constructor(props) {
-        super(props);
-        this.state = {apiToken: ''};
+    this.handleChange = this.handleChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+  }
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-    }
+  handleChange(event) {
+    this.setState({ apiToken: event.target.value });
+  }
 
-    handleChange(event) {
-        this.setState({apiToken: event.target.value});
-    }
+  handleClose() {
+    const { onClose } = this.props;
+    const { apiToken } = this.state;
+    onClose(apiToken);
+  }
 
-    handleClose() {
-        this.props.onClose(this.state.apiToken);
-    }
+  render() {
+    const { open, mandatory } = this.props;
+    const { apiToken } = this.state;
 
-    render() {
-        return (
-            <Dialog open={this.props.open}
-                    disableBackdropClick={this.props.mandatory}
-                    disableEscapeKeyDown={this.props.mandatory}
-                    aria-labelledby='form-dialog-title'>
-                <DialogTitle id='form-dialog-title'>Enter your Toggl API Token</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Your Toggl time entries will be fetched using your API Token, which you can find from your{' '}
-                        <a href='https://www.toggl.com/app/profile' target='_blank' rel='noopener noreferrer'>
-                            Toggl profile <Icon fontSize='small'>open_in_new</Icon>
-                        </a>.
-                    </DialogContentText>
-                    <TextField autoFocus fullWidth margin='dense' label='API Token' onChange={this.handleChange}/>
-                </DialogContent>
-                <DialogActions>
-                    <Button color='primary'
-                            onClick={this.handleClose}
-                            disabled={!this.props.mandatory || !this.state.apiToken}>
-                        Submit
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    }
+    return (
+      <Dialog
+        open={open}
+        disableBackdropClick={mandatory}
+        disableEscapeKeyDown={mandatory}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Enter your Toggl API Token</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your Toggl time entries will be fetched using your API Token, which you can find from your{' '}
+            <a href="https://www.toggl.com/app/profile" target="_blank" rel="noopener noreferrer">
+              Toggl profile <Icon fontSize="small">open_in_new</Icon>
+            </a>
+          </DialogContentText>
+          <TextField autoFocus fullWidth margin="dense" label="API Token" onChange={this.handleChange} />
+        </DialogContent>
+        <DialogActions>
+          <Button color="primary" onClick={this.handleClose} disabled={!mandatory || !apiToken}>
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    );
+  }
 }
 
 ApiTokenDialog.propTypes = {
-    onClose: PropTypes.func.isRequired,
-    open: PropTypes.bool.isRequired,
-    mandatory: PropTypes.bool
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  mandatory: PropTypes.bool
 };
 
 ApiTokenDialog.defaultProps = {
-    mandatory: false
+  mandatory: false
 };
 
-export default withStyles({}, {withTheme: true})(ApiTokenDialog);
+export default withStyles({}, { withTheme: true })(ApiTokenDialog);
