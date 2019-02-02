@@ -1,9 +1,11 @@
-import CssBaseline from '@material-ui/core/es/CssBaseline/CssBaseline';
+import './bootstrap';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme } from '@material-ui/core/styles';
 import MomentUtils from '@date-io/moment';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ThemeProvider } from '@material-ui/styles';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
@@ -15,12 +17,12 @@ const theme = createMuiTheme({
 });
 
 const root = () => (
-  <MuiThemeProvider theme={theme}>
+  <ThemeProvider theme={theme}>
     <CssBaseline />
     <MuiPickersUtilsProvider utils={MomentUtils}>
       <App />
     </MuiPickersUtilsProvider>
-  </MuiThemeProvider>
+  </ThemeProvider>
 );
 
 ReactDOM.render(root(), document.getElementById('root'));
