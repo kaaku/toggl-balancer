@@ -8,24 +8,16 @@ import { withStyles } from '@material-ui/core/styles';
 import Duration from './Duration';
 import MonthView from './MonthView';
 
-const workDayDuration = moment.duration('7:30').asSeconds();
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 10
   }
 });
 
-/**
- * @param month {moment.Moment}
- * @param timeEntries {Array}
- */
-function getTimeDiffsByDate(month, timeEntries) {
-  return timeEntries
-    .filter(entry => moment(entry.start).isSame(month, 'month'))
-    .reduce((result, entry) => {
-      const date = moment(entry.start).format('YYYY-MM-DD');
-      return Object.assign(result, { [date]: (result[date] || -workDayDuration) + entry.duration });
-    }, {});
+function getTimeEntriesForMonth(timeEntriesByDate, month) {
+  return Object.keys(timeEntriesByDate)
+    .filter(date => moment(date).month() === month)
+    .reduce((result, date) => Object.assign(result, { [date]: timeEntriesByDate[date] }), {});
 }
 
 /**
@@ -63,7 +55,7 @@ function getDefaultCellContent() {
 }
 
 const CalendarGrid = props => {
-  const { startDate, endDate, timeEntries, classes } = props;
+  const { startDate, endDate, timeEntriesByDate, classes } = props;
   if (startDate.isAfter(endDate)) {
     return;
   }
@@ -71,11 +63,11 @@ const CalendarGrid = props => {
   const dataByMonth = [];
   let firstDayOfMonth = moment(startDate).startOf('month');
   while (firstDayOfMonth.isBefore(endDate)) {
-    const timeDiffsByDate = getTimeDiffsByDate(firstDayOfMonth, timeEntries);
+    const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
     dataByMonth.push({
       firstDayOfMonth,
-      totalDiff: Object.values(timeDiffsByDate).reduce((result, diff) => result + diff, 0),
-      monthViewData: getMonthViewData(timeDiffsByDate)
+      totalDiff: Object.values(timeEntriesForMonth).reduce((result, diff) => result + diff, 0),
+      monthViewData: getMonthViewData(timeEntriesForMonth)
     });
     firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
   }
@@ -116,7 +108,7 @@ const CalendarGrid = props => {
 CalendarGrid.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
-  timeEntries: PropTypes.array.isRequired,
+  timeEntriesByDate: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
 
