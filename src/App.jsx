@@ -23,11 +23,20 @@ class App extends Component {
     super(props);
     this.state = Object.assign(
       {
-        apiToken: '',
+        apiToken: localStorage.getItem('apiToken') || '',
         timeEntriesByDate: {}
       },
       defaultDateRange
     );
+
+    this.handleDialogClose = this.handleDialogClose.bind(this);
+  }
+
+  componentDidMount() {
+    const { apiToken } = this.state;
+    if (apiToken) {
+      this.updateTimeEntries();
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -45,13 +54,20 @@ class App extends Component {
     );
   }
 
+  handleDialogClose(apiToken, rememberMe) {
+    if (rememberMe) {
+      localStorage.setItem('apiToken', apiToken);
+    }
+    this.setState({ apiToken });
+  }
+
   render() {
     const { startDate, endDate, apiToken, timeEntriesByDate, error } = this.state;
     const { classes } = this.props;
 
     if (!apiToken) {
       return (
-        <ApiTokenDialog open={!apiToken} mandatory={!apiToken} onClose={apiToken => this.setState({ apiToken })} />
+        <ApiTokenDialog open={!apiToken} mandatory={!apiToken} onClose={this.handleDialogClose} />
       );
     }
 

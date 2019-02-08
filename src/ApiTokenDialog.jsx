@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import Button from '@material-ui/core/Button';
+import Checkbox from '@material-ui/core/Checkbox';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Icon from '@material-ui/core/Icon';
 import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
@@ -13,7 +15,10 @@ import { withStyles } from '@material-ui/core/styles';
 class ApiTokenDialog extends Component {
   constructor(props) {
     super(props);
-    this.state = { apiToken: '' };
+    this.state = {
+      apiToken: '',
+      rememberMe: true
+    };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleClose = this.handleClose.bind(this);
@@ -25,13 +30,13 @@ class ApiTokenDialog extends Component {
 
   handleClose() {
     const { onClose } = this.props;
-    const { apiToken } = this.state;
-    onClose(apiToken);
+    const { apiToken, rememberMe } = this.state;
+    onClose(apiToken, rememberMe);
   }
 
   render() {
     const { open, mandatory } = this.props;
-    const { apiToken } = this.state;
+    const { apiToken, rememberMe } = this.state;
 
     return (
       <Dialog
@@ -49,6 +54,16 @@ class ApiTokenDialog extends Component {
             </a>
           </DialogContentText>
           <TextField autoFocus fullWidth margin="dense" label="API Token" onChange={this.handleChange} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                color="primary"
+                checked={rememberMe}
+                onChange={(e, checked) => this.setState({ rememberMe: checked })}
+              />
+            }
+            label="Remember me"
+          />
         </DialogContent>
         <DialogActions>
           <Button color="primary" onClick={this.handleClose} disabled={!mandatory || !apiToken}>
