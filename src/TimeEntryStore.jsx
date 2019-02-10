@@ -6,14 +6,23 @@ const workDayDuration = moment.duration('7:30').asSeconds();
 
 function groupEntries(timeEntries) {
   return timeEntries
-    .map(entry => ({
-      start: moment(entry.start),
-      duration: entry.duration < 0 ? moment().unix() + entry.duration : entry.duration,
-      isRunning: entry.duration < 0
-    }))
+    .map(entry =>
+      Object.assign(entry, {
+        start: moment(entry.start),
+        end: moment(entry.end),
+        duration: entry.duration < 0 ? moment().unix() + entry.duration : entry.duration,
+        isRunning: entry.duration < 0
+      })
+    )
+    .sort((a, b) => a.start.diff(b.start))
     .reduce((result, entry) => {
       const date = moment(entry.start).format('YYYY-MM-DD');
-      return Object.assign(result, { [date]: (result[date] || -workDayDuration) + entry.duration });
+      const dataForDate = result[date] || { timeEntries: [], duration: -workDayDuration, hasRunningEntry: false };
+      dataForDate.timeEntries.push(entry);
+      dataForDate.duration += entry.duration;
+      dataForDate.hasRunningEntry = dataForDate.hasRunningEntry || entry.isRunning;
+
+      return Object.assign(result, { [date]: dataForDate });
     }, {});
 }
 

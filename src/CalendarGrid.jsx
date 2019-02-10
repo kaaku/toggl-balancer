@@ -20,13 +20,10 @@ function getTimeEntriesForMonth(timeEntriesByDate, month) {
     .reduce((result, date) => Object.assign(result, { [date]: timeEntriesByDate[date] }), {});
 }
 
-/**
- * @param duration {Number}
- */
-function toCalendarCellComponent(duration) {
+function toCalendarCellComponent(data) {
   return (
     <Duration
-      duration={duration}
+      duration={data.duration}
       useColors
       textProps={{
         variant: 'h6',
@@ -37,12 +34,12 @@ function toCalendarCellComponent(duration) {
 }
 
 /**
- * @param timeDiffsByDate {Object}
+ * @param timeEntriesByDate {Object}
  */
-function getMonthViewData(timeDiffsByDate) {
+function getMonthViewData(timeEntriesByDate) {
   return Object.assign(
     {},
-    ...Object.keys(timeDiffsByDate).map(date => ({ [date]: toCalendarCellComponent(timeDiffsByDate[date]) }))
+    ...Object.keys(timeEntriesByDate).map(date => ({ [date]: toCalendarCellComponent(timeEntriesByDate[date]) }))
   );
 }
 
@@ -66,7 +63,7 @@ const CalendarGrid = props => {
     const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
     dataByMonth.push({
       firstDayOfMonth,
-      totalDiff: Object.values(timeEntriesForMonth).reduce((result, diff) => result + diff, 0),
+      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0),
       monthViewData: getMonthViewData(timeEntriesForMonth)
     });
     firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');

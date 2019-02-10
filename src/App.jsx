@@ -9,6 +9,8 @@ import CalendarGrid from './CalendarGrid';
 import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
 import TimeEntryStore from './TimeEntryStore';
 import Duration from './Duration';
+import RunningEntryIndicator from './RunningEntryIndicator';
+import './styles.css';
 
 const styles = theme => ({
   dateSelectorContainer: {
@@ -73,7 +75,8 @@ class App extends Component {
       return <ApiTokenDialog open={!apiToken} mandatory={!apiToken} onClose={this.handleDialogClose} />;
     }
 
-    const totalTimeDiff = Object.values(timeEntriesByDate).reduce((a, b) => a + b, 0);
+    const totalTimeDiff = Object.values(timeEntriesByDate).reduce((sum, entry) => sum + entry.duration, 0);
+    const isTrackingOngoing = Object.values(timeEntriesByDate).some(entry => entry.hasRunningEntry);
 
     return (
       <React.Fragment>
@@ -85,6 +88,7 @@ class App extends Component {
             <Grid item xs={12}>
               <Typography variant="h2" align="center" className={classes.totalTimeDiff}>
                 Total: <Duration duration={totalTimeDiff} useColors textProps={{ variant: 'inherit', inline: true }} />
+                <RunningEntryIndicator size="large" visible={isTrackingOngoing} />
               </Typography>
             </Grid>
           )}
