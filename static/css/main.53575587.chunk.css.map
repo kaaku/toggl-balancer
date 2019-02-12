@@ -1,1 +1,0 @@
-{"version":3,"sources":["C:/workspace/projects/toggl-balancer/src/C:/workspace/projects/toggl-balancer/src/styles.css"],"names":[],"mappings":"AAAA,2BACI,IACI,SAAU,CACb,CACJ,AAJD,mBACI,IACI,SAAU,CACb,CACJ","file":"main.53575587.chunk.css","sourcesContent":["@keyframes blinker {\r\n    50% {\r\n        opacity: 0\r\n    }\r\n}\r\n"]}

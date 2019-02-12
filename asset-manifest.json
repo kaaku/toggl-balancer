@@ -1,13 +1,13 @@
 {
-  "main.css": "/toggl-balancer/static/css/main.53575587.chunk.css",
-  "main.js": "/toggl-balancer/static/js/main.6a615a7d.chunk.js",
-  "main.js.map": "/toggl-balancer/static/js/main.6a615a7d.chunk.js.map",
-  "static/js/1.6fe46298.chunk.js": "/toggl-balancer/static/js/1.6fe46298.chunk.js",
-  "static/js/1.6fe46298.chunk.js.map": "/toggl-balancer/static/js/1.6fe46298.chunk.js.map",
+  "main.css": "/toggl-balancer/static/css/main.b5b27a52.chunk.css",
+  "main.js": "/toggl-balancer/static/js/main.94b3c119.chunk.js",
+  "main.js.map": "/toggl-balancer/static/js/main.94b3c119.chunk.js.map",
+  "static/js/1.84515272.chunk.js": "/toggl-balancer/static/js/1.84515272.chunk.js",
+  "static/js/1.84515272.chunk.js.map": "/toggl-balancer/static/js/1.84515272.chunk.js.map",
   "runtime~main.js": "/toggl-balancer/static/js/runtime~main.60f01546.js",
   "runtime~main.js.map": "/toggl-balancer/static/js/runtime~main.60f01546.js.map",
-  "static/css/main.53575587.chunk.css.map": "/toggl-balancer/static/css/main.53575587.chunk.css.map",
+  "static/css/main.b5b27a52.chunk.css.map": "/toggl-balancer/static/css/main.b5b27a52.chunk.css.map",
   "index.html": "/toggl-balancer/index.html",
-  "precache-manifest.41caa6d37c5689da461c8c5557f2f4f7.js": "/toggl-balancer/precache-manifest.41caa6d37c5689da461c8c5557f2f4f7.js",
+  "precache-manifest.0fba7f7e207b0b848bd2ef16ac785a48.js": "/toggl-balancer/precache-manifest.0fba7f7e207b0b848bd2ef16ac785a48.js",
   "service-worker.js": "/toggl-balancer/service-worker.js"
 }
