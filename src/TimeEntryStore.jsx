@@ -57,7 +57,18 @@ export default {
         'Content-Type': 'application/json'
       })
     })
-      .then(res => res.json())
+      .catch(() => {
+        throw Error('Failed to fetch time entries, check your internet connection');
+      })
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        if (response.status === 403) {
+          throw Error('Toggl authentication failed, maybe the API token is incorrect?');
+        }
+        throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
+      })
       .then(groupEntries);
   }
 };

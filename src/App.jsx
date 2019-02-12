@@ -1,6 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import React, { Component } from 'react';
+import SnackbarContent from '@material-ui/core/es/SnackbarContent/SnackbarContent';
 import Typography from '@material-ui/core/es/Typography/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -18,6 +19,10 @@ const styles = theme => ({
   },
   totalTimeDiff: {
     marginTop: theme.spacing.unit * 3
+  },
+  errorNotification: {
+    marginTop: theme.spacing.unit * 3,
+    backgroundColor: theme.palette.error.main
   }
 });
 
@@ -49,10 +54,14 @@ class App extends Component {
 
   updateTimeEntries() {
     const { startDate, endDate, apiToken } = this.state;
-    TimeEntryStore.fetchTimeEntries(startDate, endDate, apiToken).then(
-      result => this.setState({ timeEntriesByDate: result }),
-      error => this.setState({ error: error.toString() })
-    );
+    try {
+      TimeEntryStore.fetchTimeEntries(startDate, endDate, apiToken).then(
+        result => this.setState({ timeEntriesByDate: result }),
+        error => this.setState({ error: error.message })
+      );
+    } catch ({ message }) {
+      this.setState({ error: message });
+    }
   }
 
   handleDialogClose(apiToken, rememberMe) {
@@ -92,11 +101,15 @@ class App extends Component {
               </Typography>
             </Grid>
           )}
+          {error && (
+            <Grid item>
+              <SnackbarContent className={classes.errorNotification} message={error} />
+            </Grid>
+          )}
         </Grid>
         {Object.keys(timeEntriesByDate).length > 0 && (
           <CalendarGrid startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
         )}
-        {error && <div>{error}</div>}
       </React.Fragment>
     );
   }
