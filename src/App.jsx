@@ -1,3 +1,4 @@
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import React, { Component } from 'react';
@@ -14,6 +15,11 @@ import RunningEntryIndicator from './RunningEntryIndicator';
 import './styles.css';
 
 const styles = theme => ({
+  changeApiToken: {
+    position: 'absolute',
+    top: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2
+  },
   dateSelectorContainer: {
     marginTop: theme.spacing.unit * 5
   },
@@ -32,7 +38,7 @@ class App extends Component {
     const { apiToken, startDate, endDate } = localStorage;
     const dateRange =
       startDate && endDate ? { startDate: moment(startDate), endDate: moment(endDate) } : defaultDateRange;
-    this.state = Object.assign({ apiToken, timeEntriesByDate: {} }, dateRange);
+    this.state = Object.assign({ apiToken, timeEntriesByDate: {}, showApiTokenDialog: !apiToken }, dateRange);
 
     this.handleDialogClose = this.handleDialogClose.bind(this);
     this.handleDateRangeChange = this.handleDateRangeChange.bind(this);
@@ -56,19 +62,25 @@ class App extends Component {
     const { startDate, endDate, apiToken } = this.state;
     try {
       TimeEntryStore.fetchTimeEntries(startDate, endDate, apiToken).then(
-        result => this.setState({ timeEntriesByDate: result }),
-        error => this.setState({ error: error.message })
+        result => this.setState({ timeEntriesByDate: result, error: undefined }),
+        error => this.setState({ timeEntriesByDate: {}, error: error.message })
       );
     } catch ({ message }) {
       this.setState({ error: message });
     }
   }
 
-  handleDialogClose(apiToken, rememberMe) {
-    if (rememberMe) {
-      localStorage.setItem('apiToken', apiToken);
+  handleDialogClose({ apiToken, rememberMe }) {
+    const stateChange = { showApiTokenDialog: false };
+    if (apiToken) {
+      if (rememberMe) {
+        localStorage.setItem('apiToken', apiToken);
+      } else {
+        localStorage.removeItem('apiToken');
+      }
+      Object.assign(stateChange, { apiToken });
     }
-    this.setState({ apiToken });
+    this.setState(stateChange);
   }
 
   handleDateRangeChange(dateRange) {
@@ -77,11 +89,11 @@ class App extends Component {
   }
 
   render() {
-    const { startDate, endDate, apiToken, timeEntriesByDate, error } = this.state;
+    const { startDate, endDate, apiToken, showApiTokenDialog, timeEntriesByDate, error } = this.state;
     const { classes } = this.props;
 
     if (!apiToken) {
-      return <ApiTokenDialog open={!apiToken} mandatory={!apiToken} onClose={this.handleDialogClose} />;
+      return <ApiTokenDialog mandatory onClose={this.handleDialogClose} />;
     }
 
     const totalTimeDiff = Object.values(timeEntriesByDate).reduce((sum, entry) => sum + entry.duration, 0);
@@ -89,6 +101,19 @@ class App extends Component {
 
     return (
       <React.Fragment>
+        <ApiTokenDialog
+          open={showApiTokenDialog}
+          mandatory={false}
+          oldApiToken={apiToken}
+          onClose={this.handleDialogClose}
+        />
+        <Button
+          className={classes.changeApiToken}
+          color="primary"
+          onClick={() => this.setState({ showApiTokenDialog: true })}
+        >
+          Change API Token
+        </Button>
         <Grid container justify="center" className={classes.dateSelectorContainer}>
           <Grid item>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />

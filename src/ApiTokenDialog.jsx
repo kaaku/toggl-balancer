@@ -16,22 +16,28 @@ class ApiTokenDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      apiToken: '',
+      apiToken: props.oldApiToken,
       rememberMe: true
     };
 
     this.handleChange = this.handleChange.bind(this);
-    this.handleClose = this.handleClose.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
   }
 
   handleChange(event) {
     this.setState({ apiToken: event.target.value });
   }
 
-  handleClose() {
+  handleSubmit() {
     const { onClose } = this.props;
     const { apiToken, rememberMe } = this.state;
-    onClose(apiToken, rememberMe);
+    onClose({ apiToken, rememberMe });
+  }
+
+  handleCancel() {
+    const { onClose } = this.props;
+    onClose({});
   }
 
   render() {
@@ -53,7 +59,15 @@ class ApiTokenDialog extends Component {
               Toggl profile <Icon fontSize="small">open_in_new</Icon>
             </a>
           </DialogContentText>
-          <TextField autoFocus fullWidth margin="dense" label="API Token" onChange={this.handleChange} />
+          <TextField
+            type="password"
+            autoFocus
+            fullWidth
+            margin="dense"
+            label="API Token"
+            value={apiToken}
+            onChange={this.handleChange}
+          />
           <FormControlLabel
             control={
               <Checkbox
@@ -66,7 +80,12 @@ class ApiTokenDialog extends Component {
           />
         </DialogContent>
         <DialogActions>
-          <Button color="primary" onClick={this.handleClose} disabled={!mandatory || !apiToken}>
+          {!mandatory && (
+            <Button color="primary" onClick={this.handleCancel}>
+              Cancel
+            </Button>
+          )}
+          <Button variant="contained" color="primary" onClick={this.handleSubmit} disabled={!apiToken}>
             Submit
           </Button>
         </DialogActions>
@@ -77,11 +96,14 @@ class ApiTokenDialog extends Component {
 
 ApiTokenDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired,
+  oldApiToken: PropTypes.string,
+  open: PropTypes.bool,
   mandatory: PropTypes.bool
 };
 
 ApiTokenDialog.defaultProps = {
+  oldApiToken: '',
+  open: true,
   mandatory: false
 };
 
