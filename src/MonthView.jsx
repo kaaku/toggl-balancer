@@ -12,8 +12,17 @@ const styles = theme => ({
     padding: 10,
     height: '100%'
   },
+  dayOfMonth: {
+    padding: 3
+  },
+  today: {
+    borderRadius: '50%',
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    fontWeight: theme.typography.fontWeightMedium
+  },
   disabled: {
-    backgroundColor: theme.palette.grey[200]
+    backgroundColor: theme.palette.action.disabledBackground
   }
 });
 
@@ -52,7 +61,12 @@ const MonthView = props => {
               <Paper
                 className={classNames(classes.calendarCell, { [classes.disabled]: moment(date).month() + 1 !== month })}
               >
-                <Typography variant="overline" gutterBottom>
+                <Typography
+                  variant="overline"
+                  inline
+                  gutterBottom
+                  className={classNames(classes.dayOfMonth, { [classes.today]: moment().isSame(date, 'day') })}
+                >
                   {moment(date).format('DD')}
                 </Typography>
                 {data[date] && data[date]}
