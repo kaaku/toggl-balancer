@@ -26,7 +26,7 @@ const styles = theme => ({
   }
 });
 
-const MonthView = props => {
+const CalendarGrid = props => {
   const { year, month, data, defaultContent, classes } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -80,7 +80,7 @@ const MonthView = props => {
   );
 };
 
-MonthView.propTypes = {
+CalendarGrid.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
   data: PropTypes.shape({
@@ -89,4 +89,4 @@ MonthView.propTypes = {
   defaultContent: PropTypes.element
 };
 
-export default withStyles(styles, { withTheme: true })(MonthView);
+export default withStyles(styles, { withTheme: true })(CalendarGrid);

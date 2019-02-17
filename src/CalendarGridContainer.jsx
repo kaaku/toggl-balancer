@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import Duration from './Duration';
-import MonthView from './MonthView';
+import CalendarGrid from './CalendarGrid';
 
 const styles = theme => ({
   root: {
@@ -90,7 +90,7 @@ const CalendarGridContainer = props => {
               />
             </Grid>
           </Grid>
-          <MonthView
+          <CalendarGrid
             year={firstDayOfMonth.year()}
             month={firstDayOfMonth.month() + 1}
             data={monthViewData}
