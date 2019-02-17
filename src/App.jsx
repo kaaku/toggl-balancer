@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/es/Typography/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
 import ApiTokenDialog from './ApiTokenDialog';
-import CalendarGrid from './CalendarGrid';
+import CalendarGridContainer from './CalendarGridContainer';
 import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
 import TimeEntryStore from './TimeEntryStore';
 import Duration from './Duration';
@@ -133,7 +133,7 @@ class App extends Component {
           )}
         </Grid>
         {Object.keys(timeEntriesByDate).length > 0 && (
-          <CalendarGrid startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
+          <CalendarGridContainer startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
         )}
       </React.Fragment>
     );

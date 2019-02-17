@@ -51,7 +51,7 @@ function getDefaultCellContent() {
   );
 }
 
-const CalendarGrid = props => {
+const CalendarGridContainer = props => {
   const { startDate, endDate, timeEntriesByDate, classes } = props;
   if (startDate.isAfter(endDate)) {
     return;
@@ -102,11 +102,11 @@ const CalendarGrid = props => {
   );
 };
 
-CalendarGrid.propTypes = {
+CalendarGridContainer.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
   timeEntriesByDate: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(CalendarGrid);
+export default withStyles(styles, { withTheme: true })(CalendarGridContainer);
