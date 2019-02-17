@@ -20,58 +20,32 @@ function getTimeEntriesForMonth(timeEntriesByDate, month) {
     .reduce((result, date) => Object.assign(result, { [date]: timeEntriesByDate[date] }), {});
 }
 
-function toCalendarCellComponent(data) {
-  return (
-    <Duration
-      duration={data.duration}
-      useColors
-      textProps={{
-        variant: 'h6',
-        align: 'center'
-      }}
-    />
-  );
-}
+function getDataByMonth(startDate, endDate, timeEntriesByDate) {
+  const dataByMonth = [];
+  let firstDayOfMonth = moment(startDate).startOf('month');
+  while (firstDayOfMonth.isSameOrBefore(endDate, 'day')) {
+    const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
+    dataByMonth.push({
+      firstDayOfMonth,
+      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0)
+    });
+    firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
+  }
 
-/**
- * @param timeEntriesByDate {Object}
- */
-function getMonthViewData(timeEntriesByDate) {
-  return Object.assign(
-    {},
-    ...Object.keys(timeEntriesByDate).map(date => ({ [date]: toCalendarCellComponent(timeEntriesByDate[date]) }))
-  );
-}
-
-function getDefaultCellContent() {
-  return (
-    <Typography variant="h6" color="textSecondary" align="center">
-      -
-    </Typography>
-  );
+  return dataByMonth;
 }
 
 const CalendarGridContainer = props => {
   const { startDate, endDate, timeEntriesByDate, classes } = props;
   if (startDate.isAfter(endDate)) {
-    return;
+    return null;
   }
 
-  const dataByMonth = [];
-  let firstDayOfMonth = moment(startDate).startOf('month');
-  while (firstDayOfMonth.isBefore(endDate)) {
-    const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
-    dataByMonth.push({
-      firstDayOfMonth,
-      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0),
-      monthViewData: getMonthViewData(timeEntriesForMonth)
-    });
-    firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
-  }
+  const dataByMonth = getDataByMonth(startDate, endDate, timeEntriesByDate);
 
   return (
     <Grid container justify="center" spacing={40} className={classes.root}>
-      {dataByMonth.map(({ firstDayOfMonth, totalDiff, monthViewData }) => (
+      {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
         <Grid item xs={12} lg={6} key={firstDayOfMonth.format('YYYY-MM')}>
           <Grid container justify="space-between">
             <Grid item>
@@ -93,8 +67,7 @@ const CalendarGridContainer = props => {
           <CalendarGrid
             year={firstDayOfMonth.year()}
             month={firstDayOfMonth.month() + 1}
-            data={monthViewData}
-            defaultContent={getDefaultCellContent()}
+            timeEntriesByDate={getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month())}
           />
         </Grid>
       ))}
