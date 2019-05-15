@@ -2,10 +2,10 @@ import moment from 'moment';
 
 const BASE_URL = 'https://www.toggl.com/api/v8/time_entries';
 
-const workDayDuration = moment.duration('7:30').asSeconds();
+const workdayDuration = moment.duration('7:30').asSeconds();
 
-function groupEntries(timeEntries) {
-  return timeEntries
+function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
+  const timeEntriesByDate = timeEntries
     .map(entry =>
       Object.assign(entry, {
         start: moment(entry.start),
@@ -17,17 +17,37 @@ function groupEntries(timeEntries) {
     .sort((a, b) => a.start.diff(b.start))
     .reduce((result, entry) => {
       const date = moment(entry.start).format('YYYY-MM-DD');
-      const dataForDate = result[date] || { timeEntries: [], duration: -workDayDuration, hasRunningEntry: false };
+      const dataForDate = result[date] || {
+        timeEntries: [],
+        duration: timeEntryStore.isWorkday(date, workdayOverrides, true) ? -workdayDuration : 0,
+        hasRunningEntry: false
+      };
       dataForDate.timeEntries.push(entry);
       dataForDate.duration += entry.duration;
       dataForDate.hasRunningEntry = dataForDate.hasRunningEntry || entry.isRunning;
 
       return Object.assign(result, { [date]: dataForDate });
     }, {});
+
+  let date = startDate;
+  while (date.isBefore(endDate, 'day')) {
+    const dateString = date.format('YYYY-MM-DD');
+    if (!timeEntriesByDate.hasOwnProperty(dateString)) {
+      timeEntriesByDate[dateString] = {
+        timeEntries: [],
+        duration: timeEntryStore.isWorkday(dateString, workdayOverrides, false) ? -workdayDuration : null,
+        hasRunningEntry: false
+      };
+    }
+
+    date = date.add(1, 'day');
+  }
+
+  return timeEntriesByDate;
 }
 
-export default {
-  fetchTimeEntries(startDate, endDate, apiToken) {
+export const timeEntryStore = {
+  fetchTimeEntries(startDate, endDate, apiToken, workdaySettings) {
     if (!startDate && !endDate) {
       throw Error('Either start date or end date is required');
     } else if (!apiToken) {
@@ -69,6 +89,34 @@ export default {
         }
         throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
       })
-      .then(groupEntries);
+      .then(timeEntries => groupEntries(start, end, timeEntries, workdaySettings));
+  },
+
+  refreshDurations(timeEntriesByDate = {}, workdayOverrides = {}) {
+    const refreshed = {};
+
+    Object.entries(timeEntriesByDate).forEach(([date, dataForDate]) => {
+      const hasTimeEntries = dataForDate.timeEntries.length > 0;
+      const isWorkday = this.isWorkday(date, workdayOverrides, hasTimeEntries);
+      let duration = null;
+      if (hasTimeEntries || isWorkday) {
+        const baseDuration = dataForDate.timeEntries.map(entry => entry.duration).reduce((a, b) => a + b, 0);
+        duration = baseDuration + (isWorkday ? -workdayDuration : 0);
+      }
+      refreshed[date] = Object.assign({}, dataForDate, { duration });
+    });
+
+    return refreshed;
+  },
+
+  isWorkday(date, workdayOverrides = {}, hasTimeEntries = false) {
+    if (workdayOverrides.hasOwnProperty(date)) {
+      return workdayOverrides[date];
+    }
+    if ([6, 7].includes(moment(date).isoWeekday())) {
+      return false;
+    }
+
+    return hasTimeEntries;
   }
 };

@@ -9,9 +9,10 @@ import { withStyles } from '@material-ui/core/styles';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
-import TimeEntryStore from './TimeEntryStore';
+import { timeEntryStore } from './TimeEntryStore';
 import Duration from './Duration';
 import RunningEntryIndicator from './RunningEntryIndicator';
+import { TimeEntryContext } from './TimeEntryContext';
 import './styles.css';
 
 const styles = theme => ({
@@ -35,13 +36,30 @@ const styles = theme => ({
 class App extends Component {
   constructor(props) {
     super(props);
-    const { apiToken, startDate, endDate } = localStorage;
+    const { apiToken, startDate, endDate, workdayOverrides: workdayOverridesString } = localStorage;
+    let workdayOverrides = {};
+    try {
+      if (workdayOverridesString) {
+        workdayOverrides = JSON.parse(workdayOverridesString);
+      }
+    } catch (e) {
+      console.warn(`Couldn't parse workday overrides from localStorage: ${workdayOverridesString}`);
+      workdayOverrides = {};
+    }
     const dateRange =
       startDate && endDate ? { startDate: moment(startDate), endDate: moment(endDate) } : defaultDateRange;
-    this.state = Object.assign({ apiToken, timeEntriesByDate: {}, showApiTokenDialog: !apiToken }, dateRange);
 
     this.handleDialogClose = this.handleDialogClose.bind(this);
     this.handleDateRangeChange = this.handleDateRangeChange.bind(this);
+    this.toggleWorkday = this.toggleWorkday.bind(this);
+
+    this.state = {
+      apiToken,
+      showApiTokenDialog: !apiToken,
+      startDate: dateRange.startDate,
+      endDate: dateRange.endDate,
+      timeEntryContext: { timeEntriesByDate: {}, workdayOverrides, toggleWorkday: this.toggleWorkday }
+    };
   }
 
   componentDidMount() {
@@ -58,12 +76,39 @@ class App extends Component {
     }
   }
 
+  toggleWorkday(date) {
+    const {
+      timeEntryContext,
+      timeEntryContext: { workdayOverrides, timeEntriesByDate }
+    } = this.state;
+
+    const oldSetting = timeEntryStore.isWorkday(date, workdayOverrides, timeEntriesByDate[date].timeEntries.length > 0);
+    const newWorkdayOverrides = Object.assign({}, workdayOverrides, { [date]: !oldSetting });
+    const refreshedTimeEntries = timeEntryStore.refreshDurations(timeEntriesByDate, newWorkdayOverrides);
+
+    localStorage.setItem('workdayOverrides', JSON.stringify(newWorkdayOverrides));
+    this.setState({
+      timeEntryContext: Object.assign({}, timeEntryContext, {
+        timeEntriesByDate: refreshedTimeEntries,
+        workdayOverrides: newWorkdayOverrides
+      })
+    });
+  }
+
   updateTimeEntries() {
-    const { startDate, endDate, apiToken } = this.state;
+    const { startDate, endDate, apiToken, timeEntryContext } = this.state;
     try {
-      TimeEntryStore.fetchTimeEntries(startDate, endDate, apiToken).then(
-        result => this.setState({ timeEntriesByDate: result, error: undefined }),
-        error => this.setState({ timeEntriesByDate: {}, error: error.message })
+      timeEntryStore.fetchTimeEntries(startDate, endDate, apiToken, timeEntryContext.workdayOverrides).then(
+        result =>
+          this.setState({
+            timeEntryContext: Object.assign({}, timeEntryContext, { timeEntriesByDate: result }),
+            error: undefined
+          }),
+        error =>
+          this.setState({
+            timeEntryContext: Object.assign({}, timeEntryContext, { timeEntriesByDate: {} }),
+            error: error.message
+          })
       );
     } catch ({ message }) {
       this.setState({ error: message });
@@ -89,7 +134,15 @@ class App extends Component {
   }
 
   render() {
-    const { startDate, endDate, apiToken, showApiTokenDialog, timeEntriesByDate, error } = this.state;
+    const {
+      startDate,
+      endDate,
+      apiToken,
+      showApiTokenDialog,
+      timeEntryContext,
+      timeEntryContext: { timeEntriesByDate },
+      error
+    } = this.state;
     const { classes } = this.props;
 
     if (!apiToken) {
@@ -133,7 +186,9 @@ class App extends Component {
           )}
         </Grid>
         {Object.keys(timeEntriesByDate).length > 0 && (
-          <CalendarGridContainer startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
+          <TimeEntryContext.Provider value={timeEntryContext}>
+            <CalendarGridContainer startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
+          </TimeEntryContext.Provider>
         )}
       </React.Fragment>
     );
