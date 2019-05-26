@@ -1,13 +1,15 @@
 {
-  "main.css": "/toggl-balancer/static/css/main.d50775e7.chunk.css",
-  "main.js": "/toggl-balancer/static/js/main.c4fc49dd.chunk.js",
-  "main.js.map": "/toggl-balancer/static/js/main.c4fc49dd.chunk.js.map",
-  "static/js/1.04fc4050.chunk.js": "/toggl-balancer/static/js/1.04fc4050.chunk.js",
-  "static/js/1.04fc4050.chunk.js.map": "/toggl-balancer/static/js/1.04fc4050.chunk.js.map",
-  "runtime~main.js": "/toggl-balancer/static/js/runtime~main.60f01546.js",
-  "runtime~main.js.map": "/toggl-balancer/static/js/runtime~main.60f01546.js.map",
-  "static/css/main.d50775e7.chunk.css.map": "/toggl-balancer/static/css/main.d50775e7.chunk.css.map",
-  "index.html": "/toggl-balancer/index.html",
-  "precache-manifest.ec8db3fa48276f7732ff3e33c2c493a4.js": "/toggl-balancer/precache-manifest.ec8db3fa48276f7732ff3e33c2c493a4.js",
-  "service-worker.js": "/toggl-balancer/service-worker.js"
+  "files": {
+    "main.css": "/toggl-balancer/static/css/main.01488732.chunk.css",
+    "main.js": "/toggl-balancer/static/js/main.f714957d.chunk.js",
+    "main.js.map": "/toggl-balancer/static/js/main.f714957d.chunk.js.map",
+    "runtime~main.js": "/toggl-balancer/static/js/runtime~main.65e7b23b.js",
+    "runtime~main.js.map": "/toggl-balancer/static/js/runtime~main.65e7b23b.js.map",
+    "static/js/2.fdd43bf7.chunk.js": "/toggl-balancer/static/js/2.fdd43bf7.chunk.js",
+    "static/js/2.fdd43bf7.chunk.js.map": "/toggl-balancer/static/js/2.fdd43bf7.chunk.js.map",
+    "index.html": "/toggl-balancer/index.html",
+    "precache-manifest.e2c638e17bba8b060cdfaa78b52e2a3e.js": "/toggl-balancer/precache-manifest.e2c638e17bba8b060cdfaa78b52e2a3e.js",
+    "service-worker.js": "/toggl-balancer/service-worker.js",
+    "static/css/main.01488732.chunk.css.map": "/toggl-balancer/static/css/main.01488732.chunk.css.map"
+  }
 }
