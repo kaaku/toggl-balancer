@@ -8,12 +8,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
 
-const styles = theme => ({
-  root: {
-    padding: theme.spacing(10)
-  }
-});
-
 function getTimeEntriesForMonth(timeEntriesByDate, month) {
   return Object.keys(timeEntriesByDate)
     .filter(date => moment(date).month() === month)
@@ -82,4 +76,4 @@ CalendarGridContainer.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(CalendarGridContainer);
+export default withStyles({}, { withTheme: true })(CalendarGridContainer);

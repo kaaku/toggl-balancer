@@ -1,11 +1,12 @@
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import React, { Component } from 'react';
 import SnackbarContent from '@material-ui/core/es/SnackbarContent/SnackbarContent';
 import Typography from '@material-ui/core/es/Typography/Typography';
-import { withStyles } from '@material-ui/core/styles';
 
+import { withStyles } from '@material-ui/core/styles';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
@@ -16,13 +17,17 @@ import { TimeEntryContext } from './TimeEntryContext';
 import './styles.css';
 
 const styles = theme => ({
+  root: {
+    padding: theme.spacing(4)
+  },
   changeApiToken: {
     position: 'absolute',
     top: theme.spacing(2),
     right: theme.spacing(2)
   },
   dateSelectorContainer: {
-    marginTop: theme.spacing(5)
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(10)
   },
   totalTimeDiff: {
     marginTop: theme.spacing(3)
@@ -153,7 +158,7 @@ class App extends Component {
     const isTrackingOngoing = Object.values(timeEntriesByDate).some(entry => entry.hasRunningEntry);
 
     return (
-      <React.Fragment>
+      <Box className={classes.root}>
         <ApiTokenDialog
           open={showApiTokenDialog}
           mandatory={false}
@@ -190,7 +195,7 @@ class App extends Component {
             <CalendarGridContainer startDate={startDate} endDate={endDate} timeEntriesByDate={timeEntriesByDate} />
           </TimeEntryContext.Provider>
         )}
-      </React.Fragment>
+      </Box>
     );
   }
 }
