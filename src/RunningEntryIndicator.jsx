@@ -8,7 +8,7 @@ import { withStyles } from '@material-ui/core/styles';
 const styles = theme => ({
   root: {
     color: red[500],
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     verticalAlign: 'top',
     animation: 'blinker 2s cubic-bezier(0.46, 0.03, 0.52, 0.96) infinite'
   }

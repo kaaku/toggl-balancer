@@ -10,7 +10,7 @@ import CalendarGrid from './CalendarGrid';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 10
+    padding: theme.spacing(10)
   }
 });
 
@@ -44,7 +44,7 @@ const CalendarGridContainer = props => {
   const dataByMonth = getDataByMonth(startDate, endDate, timeEntriesByDate);
 
   return (
-    <Grid container justify="center" spacing={40} className={classes.root}>
+    <Grid container justify="center" spacing={5} className={classes.root}>
       {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
         <Grid item xs={12} lg={6} key={firstDayOfMonth.format('YYYY-MM')}>
           <Grid container justify="space-between">

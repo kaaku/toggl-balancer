@@ -51,7 +51,7 @@ const CalendarGrid = props => {
   return (
     <React.Fragment>
       {weeks.map(week => (
-        <Grid container spacing={16} key={moment(week[0]).week()}>
+        <Grid container spacing={2} key={moment(week[0]).week()}>
           {week.map(date => (
             <Grid item xs key={date}>
               <CalendarCell

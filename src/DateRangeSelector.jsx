@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker } from '@material-ui/pickers';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
@@ -9,10 +9,10 @@ import { withStyles } from '@material-ui/core/styles';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 5
+    padding: theme.spacing(5)
   },
   quickSelections: {
-    marginTop: theme.spacing.unit * 2
+    marginTop: theme.spacing(2)
   }
 });
 
@@ -55,7 +55,7 @@ const DateRangeSelector = props => {
 
   return (
     <Paper className={classes.root}>
-      <Grid container justify="space-evenly" spacing={40}>
+      <Grid container justify="space-evenly" spacing={5}>
         <Grid item>
           <DatePicker
             label="From"
@@ -89,7 +89,7 @@ const DateRangeSelector = props => {
           />
         </Grid>
       </Grid>
-      <Grid container justify="space-evenly" spacing={40} className={classes.quickSelections}>
+      <Grid container justify="space-evenly" spacing={5} className={classes.quickSelections}>
         {quickSelections.map(selection => (
           <Grid item key={selection.title}>
             <Button onClick={() => onChange(selection.getDateRange())} size="small">

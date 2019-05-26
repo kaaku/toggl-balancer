@@ -1,10 +1,9 @@
-import './bootstrap';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { createMuiTheme } from '@material-ui/core/styles';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@material-ui/styles';
@@ -14,11 +13,7 @@ import App from './App';
 
 moment.locale('en-gb');
 
-const theme = createMuiTheme({
-  typography: {
-    useNextVariants: true
-  }
-});
+const theme = createMuiTheme();
 
 const root = () => (
   <ThemeProvider theme={theme}>

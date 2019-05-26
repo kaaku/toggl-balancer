@@ -18,17 +18,17 @@ import './styles.css';
 const styles = theme => ({
   changeApiToken: {
     position: 'absolute',
-    top: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2
+    top: theme.spacing(2),
+    right: theme.spacing(2)
   },
   dateSelectorContainer: {
-    marginTop: theme.spacing.unit * 5
+    marginTop: theme.spacing(5)
   },
   totalTimeDiff: {
-    marginTop: theme.spacing.unit * 3
+    marginTop: theme.spacing(3)
   },
   errorNotification: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     backgroundColor: theme.palette.error.main
   }
 });
