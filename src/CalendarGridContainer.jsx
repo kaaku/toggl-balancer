@@ -40,7 +40,7 @@ const CalendarGridContainer = props => {
   return (
     <Grid container justify="center" spacing={5} className={classes.root}>
       {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
-        <Grid item xs={12} lg={6} key={firstDayOfMonth.format('YYYY-MM')}>
+        <Grid item xs={12} xl={6} key={firstDayOfMonth.format('YYYY-MM')}>
           <Grid container justify="space-between">
             <Grid item>
               <Typography variant="h2" gutterBottom>
