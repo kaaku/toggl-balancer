@@ -2,6 +2,7 @@ import classNames from 'classnames';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Box from '@material-ui/core/Box';
 import Checkbox from '@material-ui/core/Checkbox';
 import Paper from '@material-ui/core/Paper';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -16,15 +17,19 @@ import { TimeEntryContext } from './TimeEntryContext';
 import { timeEntryStore } from './TimeEntryStore';
 
 const styles = theme => ({
-  calendarCell: {
-    padding: 10,
+  root: {
+    padding: theme.spacing(1),
     height: '100%'
   },
   disabled: {
     backgroundColor: theme.palette.action.disabledBackground
   },
   dayOfMonth: {
-    padding: 3
+    display: 'inline-block',
+    padding: theme.spacing(3 / 8),
+    '& span': {
+      padding: theme.spacing(0.5)
+    }
   },
   today: {
     borderRadius: '50%',
@@ -32,8 +37,12 @@ const styles = theme => ({
     color: theme.palette.primary.contrastText,
     fontWeight: theme.typography.fontWeightMedium
   },
-  overrideToggle: {
+  indicator: {
     float: 'right'
+  },
+  overrideToggle: {
+    float: 'right',
+    padding: theme.spacing(1)
   }
 });
 
@@ -47,32 +56,33 @@ const CalendarCell = props => {
   return (
     <TimeEntryContext.Consumer>
       {({ workdayOverrides, toggleWorkday }) => (
-        <Paper className={classNames(classes.calendarCell, { [classes.disabled]: disabled })}>
-          <Typography
-            variant="overline"
-            inline
-            gutterBottom
-            className={classNames(classes.dayOfMonth, { [classes.today]: isCurrentDate })}
-          >
-            {moment(date).format('DD')}
-          </Typography>
-          <RunningEntryIndicator size="small" visible={hasRunningEntry} />
-          {!disabled && (
-            <Tooltip
-              title={isWorkingDay(workdayOverrides) ? 'Working day' : 'Non-working day'}
-              placement="top"
-              enterDelay={500}
-            >
-              <Checkbox
-                icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
-                checkedIcon={<CheckBoxIcon fontSize="small" />}
-                checked={isWorkingDay(workdayOverrides)}
-                onChange={() => toggleWorkday(date)}
-                className={classes.overrideToggle}
-                color="primary"
-              />
-            </Tooltip>
-          )}
+        <Paper className={classNames(classes.root, { [classes.disabled]: disabled })}>
+          <Box>
+            <Box component="span" className={classes.dayOfMonth}>
+              <Typography variant="overline" gutterBottom className={classNames({ [classes.today]: isCurrentDate })}>
+                {moment(date).format('DD')}
+              </Typography>
+            </Box>
+            {!disabled && (
+              <Tooltip
+                title={isWorkingDay(workdayOverrides) ? 'Working day' : 'Non-working day'}
+                placement="top"
+                enterDelay={500}
+              >
+                <Checkbox
+                  icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                  checkedIcon={<CheckBoxIcon fontSize="small" />}
+                  checked={isWorkingDay(workdayOverrides)}
+                  onChange={() => toggleWorkday(date)}
+                  className={classes.overrideToggle}
+                  color="primary"
+                />
+              </Tooltip>
+            )}
+            <Box className={classes.indicator}>
+              <RunningEntryIndicator size="small" visible={hasRunningEntry} />
+            </Box>
+          </Box>
           {hasDuration && (
             <Duration
               duration={duration}
