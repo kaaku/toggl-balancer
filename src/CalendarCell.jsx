@@ -1,10 +1,13 @@
 import classNames from 'classnames';
 import moment from 'moment';
-import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import Checkbox from '@material-ui/core/Checkbox';
+import Paper from '@material-ui/core/Paper';
+import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
-import Switch from '@material-ui/core/Switch';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
 import { withStyles } from '@material-ui/core/styles';
 
 import Duration from './Duration';
@@ -28,13 +31,18 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
     fontWeight: theme.typography.fontWeightMedium
+  },
+  overrideToggle: {
+    float: 'right'
   }
 });
 
 const CalendarCell = props => {
   const { date, duration, hasRunningEntry, disabled, classes } = props;
-  const isCurrentDate = moment().isSame(date, 'day');
   const hasDuration = Number.isSafeInteger(duration);
+  const isCurrentDate = moment().isSame(date, 'day');
+
+  const isWorkingDay = workdayOverrides => timeEntryStore.isWorkday(date, workdayOverrides, hasDuration);
 
   return (
     <TimeEntryContext.Consumer>
@@ -50,11 +58,20 @@ const CalendarCell = props => {
           </Typography>
           <RunningEntryIndicator size="small" visible={hasRunningEntry} />
           {!disabled && (
-            <Switch
-              checked={timeEntryStore.isWorkday(date, workdayOverrides, hasDuration)}
-              onChange={() => toggleWorkday(date)}
-              color="primary"
-            />
+            <Tooltip
+              title={isWorkingDay(workdayOverrides) ? 'Working day' : 'Non-working day'}
+              placement="top"
+              enterDelay={500}
+            >
+              <Checkbox
+                icon={<CheckBoxOutlineBlankIcon fontSize="small" />}
+                checkedIcon={<CheckBoxIcon fontSize="small" />}
+                checked={isWorkingDay(workdayOverrides)}
+                onChange={() => toggleWorkday(date)}
+                className={classes.overrideToggle}
+                color="primary"
+              />
+            </Tooltip>
           )}
           {hasDuration && (
             <Duration
