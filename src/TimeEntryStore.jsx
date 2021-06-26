@@ -4,6 +4,86 @@ const BASE_URL = 'https://www.toggl.com/api/v8/time_entries';
 
 const workdayDuration = moment.duration('7:30').asSeconds();
 
+// eslint-disable-next-line import/prefer-default-export
+export const timeEntryStore = {
+  fetchTimeEntries(startDate, endDate, apiToken, workdaySettings) {
+    if (!startDate && !endDate) {
+      throw Error('Either start date or end date is required');
+    } else if (!apiToken) {
+      throw Error('API token is required');
+    }
+
+    const start = !startDate ? null : moment(startDate).startOf('day');
+    const end = !endDate ? null : moment(endDate).add(1, 'day').startOf('day');
+    if ((start && !start.isValid()) || (end && !end.isValid())) {
+      throw Error('Start date and/or end date were invalid');
+    }
+
+    const url = new URL(BASE_URL);
+    const params = {};
+    if (start) {
+      params.start_date = start.toISOString();
+    }
+    if (end) {
+      params.end_date = end.toISOString();
+    }
+    url.search = new URLSearchParams(params);
+
+    return (
+      fetch(url, {
+        method: 'GET',
+        headers: new Headers({
+          Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`,
+          'Content-Type': 'application/json',
+        }),
+      })
+        .catch(() => {
+          throw Error('Failed to fetch time entries, check your internet connection');
+        })
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          }
+          if (response.status === 403) {
+            throw Error('Toggl authentication failed, maybe the API token is incorrect?');
+          }
+          throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
+        })
+        // eslint-disable-next-line no-use-before-define
+        .then((timeEntries) => groupEntries(start, end, timeEntries, workdaySettings))
+    );
+  },
+
+  refreshDurations(timeEntriesByDate = {}, workdayOverrides = {}) {
+    const refreshed = {};
+
+    Object.entries(timeEntriesByDate).forEach(([date, dataForDate]) => {
+      const hasTimeEntries = dataForDate.timeEntries.length > 0;
+      const isWorkday = this.isWorkday(date, workdayOverrides, hasTimeEntries);
+      let duration = null;
+      if (hasTimeEntries || isWorkday) {
+        const baseDuration = dataForDate.timeEntries.map((entry) => entry.duration).reduce((a, b) => a + b, 0);
+        duration = baseDuration + (isWorkday ? -workdayDuration : 0);
+      }
+      refreshed[date] = { ...dataForDate, duration };
+    });
+
+    return refreshed;
+  },
+
+  isWorkday(date, workdayOverrides = {}, hasTimeEntries = false) {
+    // eslint-disable-next-line no-prototype-builtins
+    if (workdayOverrides.hasOwnProperty(date)) {
+      return workdayOverrides[date];
+    }
+    if ([6, 7].includes(moment(date).isoWeekday())) {
+      return false;
+    }
+
+    return hasTimeEntries;
+  },
+};
+
 function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
   const timeEntriesByDate = timeEntries
     .map((entry) =>
@@ -32,6 +112,7 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
   let date = startDate;
   while (date.isBefore(endDate, 'day')) {
     const dateString = date.format('YYYY-MM-DD');
+    // eslint-disable-next-line no-prototype-builtins
     if (!timeEntriesByDate.hasOwnProperty(dateString)) {
       timeEntriesByDate[dateString] = {
         timeEntries: [],
@@ -45,78 +126,3 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
 
   return timeEntriesByDate;
 }
-
-export const timeEntryStore = {
-  fetchTimeEntries(startDate, endDate, apiToken, workdaySettings) {
-    if (!startDate && !endDate) {
-      throw Error('Either start date or end date is required');
-    } else if (!apiToken) {
-      throw Error('API token is required');
-    }
-
-    const start = !startDate ? null : moment(startDate).startOf('day');
-    const end = !endDate ? null : moment(endDate).add(1, 'day').startOf('day');
-    if ((start && !start.isValid()) || (end && !end.isValid())) {
-      throw Error('Start date and/or end date were invalid');
-    }
-
-    const url = new URL(BASE_URL);
-    const params = {};
-    if (start) {
-      params.start_date = start.toISOString();
-    }
-    if (end) {
-      params.end_date = end.toISOString();
-    }
-    url.search = new URLSearchParams(params);
-
-    return fetch(url, {
-      method: 'GET',
-      headers: new Headers({
-        Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`,
-        'Content-Type': 'application/json',
-      }),
-    })
-      .catch(() => {
-        throw Error('Failed to fetch time entries, check your internet connection');
-      })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        if (response.status === 403) {
-          throw Error('Toggl authentication failed, maybe the API token is incorrect?');
-        }
-        throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
-      })
-      .then((timeEntries) => groupEntries(start, end, timeEntries, workdaySettings));
-  },
-
-  refreshDurations(timeEntriesByDate = {}, workdayOverrides = {}) {
-    const refreshed = {};
-
-    Object.entries(timeEntriesByDate).forEach(([date, dataForDate]) => {
-      const hasTimeEntries = dataForDate.timeEntries.length > 0;
-      const isWorkday = this.isWorkday(date, workdayOverrides, hasTimeEntries);
-      let duration = null;
-      if (hasTimeEntries || isWorkday) {
-        const baseDuration = dataForDate.timeEntries.map((entry) => entry.duration).reduce((a, b) => a + b, 0);
-        duration = baseDuration + (isWorkday ? -workdayDuration : 0);
-      }
-      refreshed[date] = { ...dataForDate, duration };
-    });
-
-    return refreshed;
-  },
-
-  isWorkday(date, workdayOverrides = {}, hasTimeEntries = false) {
-    if (Object.prototype.hasOwnProperty.apply(workdayOverrides, date)) {
-      return workdayOverrides[date];
-    }
-    if ([6, 7].includes(moment(date).isoWeekday())) {
-      return false;
-    }
-
-    return hasTimeEntries;
-  },
-};

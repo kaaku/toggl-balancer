@@ -35,6 +35,8 @@ const RunningEntryIndicator = (props) => {
 RunningEntryIndicator.propTypes = {
   size: PropTypes.oneOf(['default', 'small', 'large']),
   visible: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired,
 };
 
 RunningEntryIndicator.defaultProps = {

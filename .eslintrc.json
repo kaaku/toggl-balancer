@@ -4,6 +4,7 @@
     "env": {
         "browser": true
     },
+    "ignorePatterns": ["serviceWorker.js"],
     "rules": {
         "prettier/prettier": ["error"],
         "linebreak-style": 0

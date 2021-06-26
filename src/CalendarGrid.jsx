@@ -65,6 +65,7 @@ const CalendarGrid = (props) => {
 CalendarGrid.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   timeEntriesByDate: PropTypes.object.isRequired,
 };
 

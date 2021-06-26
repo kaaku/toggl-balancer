@@ -109,6 +109,7 @@ CalendarCell.propTypes = {
   duration: PropTypes.number,
   hasRunningEntry: PropTypes.bool,
   disabled: PropTypes.bool,
+  // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
 };
 

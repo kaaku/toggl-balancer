@@ -2,6 +2,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import SnackbarContent from '@material-ui/core/es/SnackbarContent/SnackbarContent';
 import Typography from '@material-ui/core/es/Typography/Typography';
@@ -81,6 +82,24 @@ class App extends Component {
     }
   }
 
+  handleDialogClose({ apiToken, rememberMe }) {
+    const stateChange = { showApiTokenDialog: false };
+    if (apiToken) {
+      if (rememberMe) {
+        localStorage.setItem('apiToken', apiToken);
+      } else {
+        localStorage.removeItem('apiToken');
+      }
+      Object.assign(stateChange, { apiToken });
+    }
+    this.setState(stateChange);
+  }
+
+  handleDateRangeChange(dateRange) {
+    Object.keys(dateRange).forEach((key) => localStorage.setItem(key, dateRange[key].format('YYYY-MM-DD')));
+    this.setState(dateRange);
+  }
+
   toggleWorkday(date) {
     const {
       timeEntryContext,
@@ -119,24 +138,6 @@ class App extends Component {
     } catch ({ message }) {
       this.setState({ error: message });
     }
-  }
-
-  handleDialogClose({ apiToken, rememberMe }) {
-    const stateChange = { showApiTokenDialog: false };
-    if (apiToken) {
-      if (rememberMe) {
-        localStorage.setItem('apiToken', apiToken);
-      } else {
-        localStorage.removeItem('apiToken');
-      }
-      Object.assign(stateChange, { apiToken });
-    }
-    this.setState(stateChange);
-  }
-
-  handleDateRangeChange(dateRange) {
-    Object.keys(dateRange).forEach((key) => localStorage.setItem(key, dateRange[key].format('YYYY-MM-DD')));
-    this.setState(dateRange);
   }
 
   render() {
@@ -200,5 +201,10 @@ class App extends Component {
     );
   }
 }
+
+App.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired,
+};
 
 export default withStyles(styles, { withTheme: true })(App);

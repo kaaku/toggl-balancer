@@ -72,7 +72,9 @@ const CalendarGridContainer = (props) => {
 CalendarGridContainer.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   timeEntriesByDate: PropTypes.object.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   classes: PropTypes.object.isRequired,
 };
 

@@ -96,8 +96,12 @@ const DateRangeSelector = (props) => {
 
 DateRangeSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/require-default-props
   startDate: PropTypes.instanceOf(moment),
+  // eslint-disable-next-line react/require-default-props
   endDate: PropTypes.instanceOf(moment),
+  // eslint-disable-next-line react/forbid-prop-types
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(DateRangeSelector);
