@@ -11,20 +11,18 @@ function getDurationData(timeEntriesByDate, fromDate, toDate) {
   let date = moment(fromDate);
   while (date.isSameOrBefore(toDate, 'day')) {
     const dateString = date.format('YYYY-MM-DD');
-    durationData[dateString] = Object.assign(
-      {
-        duration: null,
-        hasRunningEntry: false
-      },
-      timeEntriesByDate[dateString]
-    );
+    durationData[dateString] = {
+      duration: null,
+      hasRunningEntry: false,
+      ...timeEntriesByDate[dateString],
+    };
     date = date.add(1, 'day');
   }
 
   return durationData;
 }
 
-const CalendarGrid = props => {
+const CalendarGrid = (props) => {
   const { year, month, timeEntriesByDate } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -36,11 +34,7 @@ const CalendarGrid = props => {
   const weeks = [];
   const gridCellCount = Math.round(moment.duration(lastVisibleDay.diff(firstVisibleDay)).asDays()) + 1;
   while (dates.length < gridCellCount) {
-    dates.push(
-      moment(firstVisibleDay)
-        .add(dates.length, 'days')
-        .format('YYYY-MM-DD')
-    );
+    dates.push(moment(firstVisibleDay).add(dates.length, 'days').format('YYYY-MM-DD'));
   }
   while (dates.length > 0) {
     weeks.push(dates.splice(0, 7));
@@ -49,10 +43,10 @@ const CalendarGrid = props => {
   const durationData = getDurationData(timeEntriesByDate, firstVisibleDay, lastVisibleDay);
 
   return (
-    <React.Fragment>
-      {weeks.map(week => (
+    <>
+      {weeks.map((week) => (
         <Grid container spacing={1} key={moment(week[0]).week()}>
-          {week.map(date => (
+          {week.map((date) => (
             <Grid item xs key={date}>
               <CalendarCell
                 date={date}
@@ -64,14 +58,14 @@ const CalendarGrid = props => {
           ))}
         </Grid>
       ))}
-    </React.Fragment>
+    </>
   );
 };
 
 CalendarGrid.propTypes = {
   year: PropTypes.number.isRequired,
   month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
-  timeEntriesByDate: PropTypes.object.isRequired
+  timeEntriesByDate: PropTypes.object.isRequired,
 };
 
 export default withStyles({}, { withTheme: true })(CalendarGrid);

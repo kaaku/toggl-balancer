@@ -16,42 +16,42 @@ import RunningEntryIndicator from './RunningEntryIndicator';
 import { TimeEntryContext } from './TimeEntryContext';
 import { timeEntryStore } from './TimeEntryStore';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
     padding: theme.spacing(1),
-    height: '100%'
+    height: '100%',
   },
   disabled: {
-    backgroundColor: theme.palette.action.disabledBackground
+    backgroundColor: theme.palette.action.disabledBackground,
   },
   dayOfMonth: {
     display: 'inline-block',
     padding: theme.spacing(3 / 8),
     '& span': {
-      padding: theme.spacing(0.5)
-    }
+      padding: theme.spacing(0.5),
+    },
   },
   today: {
     borderRadius: '50%',
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
-    fontWeight: theme.typography.fontWeightMedium
+    fontWeight: theme.typography.fontWeightMedium,
   },
   indicator: {
-    float: 'right'
+    float: 'right',
   },
   overrideToggle: {
     float: 'right',
-    padding: theme.spacing(1)
-  }
+    padding: theme.spacing(1),
+  },
 });
 
-const CalendarCell = props => {
+const CalendarCell = (props) => {
   const { date, duration, hasRunningEntry, disabled, classes } = props;
   const hasDuration = Number.isSafeInteger(duration);
   const isCurrentDate = moment().isSame(date, 'day');
 
-  const isWorkingDay = workdayOverrides => timeEntryStore.isWorkday(date, workdayOverrides, hasDuration);
+  const isWorkingDay = (workdayOverrides) => timeEntryStore.isWorkday(date, workdayOverrides, hasDuration);
 
   return (
     <TimeEntryContext.Consumer>
@@ -89,7 +89,7 @@ const CalendarCell = props => {
               useColors
               textProps={{
                 variant: 'h6',
-                align: 'center'
+                align: 'center',
               }}
             />
           )}
@@ -109,13 +109,13 @@ CalendarCell.propTypes = {
   duration: PropTypes.number,
   hasRunningEntry: PropTypes.bool,
   disabled: PropTypes.bool,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 CalendarCell.defaultProps = {
   duration: null,
   hasRunningEntry: false,
-  disabled: false
+  disabled: false,
 };
 
 export default withStyles(styles, { withTheme: true })(CalendarCell);

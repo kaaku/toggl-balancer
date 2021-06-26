@@ -17,7 +17,7 @@ class ApiTokenDialog extends Component {
     super(props);
     this.state = {
       apiToken: props.oldApiToken,
-      rememberMe: true
+      rememberMe: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -98,13 +98,13 @@ ApiTokenDialog.propTypes = {
   onClose: PropTypes.func.isRequired,
   oldApiToken: PropTypes.string,
   open: PropTypes.bool,
-  mandatory: PropTypes.bool
+  mandatory: PropTypes.bool,
 };
 
 ApiTokenDialog.defaultProps = {
   oldApiToken: '',
   open: true,
-  mandatory: false
+  mandatory: false,
 };
 
 export default withStyles({}, { withTheme: true })(ApiTokenDialog);

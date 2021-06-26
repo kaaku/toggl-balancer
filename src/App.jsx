@@ -16,26 +16,26 @@ import RunningEntryIndicator from './RunningEntryIndicator';
 import { TimeEntryContext } from './TimeEntryContext';
 import './styles.css';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    padding: theme.spacing(4)
+    padding: theme.spacing(4),
   },
   changeApiToken: {
     position: 'absolute',
     top: theme.spacing(2),
-    right: theme.spacing(2)
+    right: theme.spacing(2),
   },
   dateSelectorContainer: {
     marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(10)
+    marginBottom: theme.spacing(10),
   },
   totalTimeDiff: {
-    marginTop: theme.spacing(3)
+    marginTop: theme.spacing(3),
   },
   errorNotification: {
     marginTop: theme.spacing(3),
-    backgroundColor: theme.palette.error.main
-  }
+    backgroundColor: theme.palette.error.main,
+  },
 });
 
 class App extends Component {
@@ -63,7 +63,7 @@ class App extends Component {
       showApiTokenDialog: !apiToken,
       startDate: dateRange.startDate,
       endDate: dateRange.endDate,
-      timeEntryContext: { timeEntriesByDate: {}, workdayOverrides, toggleWorkday: this.toggleWorkday }
+      timeEntryContext: { timeEntriesByDate: {}, workdayOverrides, toggleWorkday: this.toggleWorkday },
     };
   }
 
@@ -84,19 +84,20 @@ class App extends Component {
   toggleWorkday(date) {
     const {
       timeEntryContext,
-      timeEntryContext: { workdayOverrides, timeEntriesByDate }
+      timeEntryContext: { workdayOverrides, timeEntriesByDate },
     } = this.state;
 
     const oldSetting = timeEntryStore.isWorkday(date, workdayOverrides, timeEntriesByDate[date].timeEntries.length > 0);
-    const newWorkdayOverrides = Object.assign({}, workdayOverrides, { [date]: !oldSetting });
+    const newWorkdayOverrides = { ...workdayOverrides, [date]: !oldSetting };
     const refreshedTimeEntries = timeEntryStore.refreshDurations(timeEntriesByDate, newWorkdayOverrides);
 
     localStorage.setItem('workdayOverrides', JSON.stringify(newWorkdayOverrides));
     this.setState({
-      timeEntryContext: Object.assign({}, timeEntryContext, {
+      timeEntryContext: {
+        ...timeEntryContext,
         timeEntriesByDate: refreshedTimeEntries,
-        workdayOverrides: newWorkdayOverrides
-      })
+        workdayOverrides: newWorkdayOverrides,
+      },
     });
   }
 
@@ -104,15 +105,15 @@ class App extends Component {
     const { startDate, endDate, apiToken, timeEntryContext } = this.state;
     try {
       timeEntryStore.fetchTimeEntries(startDate, endDate, apiToken, timeEntryContext.workdayOverrides).then(
-        result =>
+        (result) =>
           this.setState({
-            timeEntryContext: Object.assign({}, timeEntryContext, { timeEntriesByDate: result }),
-            error: undefined
+            timeEntryContext: { ...timeEntryContext, timeEntriesByDate: result },
+            error: undefined,
           }),
-        error =>
+        (error) =>
           this.setState({
-            timeEntryContext: Object.assign({}, timeEntryContext, { timeEntriesByDate: {} }),
-            error: error.message
+            timeEntryContext: { ...timeEntryContext, timeEntriesByDate: {} },
+            error: error.message,
           })
       );
     } catch ({ message }) {
@@ -134,7 +135,7 @@ class App extends Component {
   }
 
   handleDateRangeChange(dateRange) {
-    Object.keys(dateRange).forEach(key => localStorage.setItem(key, dateRange[key].format('YYYY-MM-DD')));
+    Object.keys(dateRange).forEach((key) => localStorage.setItem(key, dateRange[key].format('YYYY-MM-DD')));
     this.setState(dateRange);
   }
 
@@ -146,7 +147,7 @@ class App extends Component {
       showApiTokenDialog,
       timeEntryContext,
       timeEntryContext: { timeEntriesByDate },
-      error
+      error,
     } = this.state;
     const { classes } = this.props;
 
@@ -155,7 +156,7 @@ class App extends Component {
     }
 
     const totalTimeDiff = Object.values(timeEntriesByDate).reduce((sum, entry) => sum + entry.duration, 0);
-    const isTrackingOngoing = Object.values(timeEntriesByDate).some(entry => entry.hasRunningEntry);
+    const isTrackingOngoing = Object.values(timeEntriesByDate).some((entry) => entry.hasRunningEntry);
 
     return (
       <Box className={classes.root}>

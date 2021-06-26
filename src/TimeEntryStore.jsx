@@ -6,12 +6,12 @@ const workdayDuration = moment.duration('7:30').asSeconds();
 
 function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
   const timeEntriesByDate = timeEntries
-    .map(entry =>
+    .map((entry) =>
       Object.assign(entry, {
         start: moment(entry.start),
         end: moment(entry.end),
         duration: entry.duration < 0 ? moment().unix() + entry.duration : entry.duration,
-        isRunning: entry.duration < 0
+        isRunning: entry.duration < 0,
       })
     )
     .sort((a, b) => a.start.diff(b.start))
@@ -20,7 +20,7 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
       const dataForDate = result[date] || {
         timeEntries: [],
         duration: timeEntryStore.isWorkday(date, workdayOverrides, true) ? -workdayDuration : 0,
-        hasRunningEntry: false
+        hasRunningEntry: false,
       };
       dataForDate.timeEntries.push(entry);
       dataForDate.duration += entry.duration;
@@ -36,7 +36,7 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
       timeEntriesByDate[dateString] = {
         timeEntries: [],
         duration: timeEntryStore.isWorkday(dateString, workdayOverrides, false) ? -workdayDuration : null,
-        hasRunningEntry: false
+        hasRunningEntry: false,
       };
     }
 
@@ -74,13 +74,13 @@ export const timeEntryStore = {
       method: 'GET',
       headers: new Headers({
         Authorization: `Basic ${btoa(`${apiToken}:api_token`)}`,
-        'Content-Type': 'application/json'
-      })
+        'Content-Type': 'application/json',
+      }),
     })
       .catch(() => {
         throw Error('Failed to fetch time entries, check your internet connection');
       })
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         }
@@ -89,7 +89,7 @@ export const timeEntryStore = {
         }
         throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
       })
-      .then(timeEntries => groupEntries(start, end, timeEntries, workdaySettings));
+      .then((timeEntries) => groupEntries(start, end, timeEntries, workdaySettings));
   },
 
   refreshDurations(timeEntriesByDate = {}, workdayOverrides = {}) {
@@ -100,17 +100,17 @@ export const timeEntryStore = {
       const isWorkday = this.isWorkday(date, workdayOverrides, hasTimeEntries);
       let duration = null;
       if (hasTimeEntries || isWorkday) {
-        const baseDuration = dataForDate.timeEntries.map(entry => entry.duration).reduce((a, b) => a + b, 0);
+        const baseDuration = dataForDate.timeEntries.map((entry) => entry.duration).reduce((a, b) => a + b, 0);
         duration = baseDuration + (isWorkday ? -workdayDuration : 0);
       }
-      refreshed[date] = Object.assign({}, dataForDate, { duration });
+      refreshed[date] = { ...dataForDate, duration };
     });
 
     return refreshed;
   },
 
   isWorkday(date, workdayOverrides = {}, hasTimeEntries = false) {
-    if (workdayOverrides.hasOwnProperty(date)) {
+    if (Object.prototype.hasOwnProperty.apply(workdayOverrides, date)) {
       return workdayOverrides[date];
     }
     if ([6, 7].includes(moment(date).isoWeekday())) {
@@ -118,5 +118,5 @@ export const timeEntryStore = {
     }
 
     return hasTimeEntries;
-  }
+  },
 };

@@ -7,49 +7,41 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
 
-const styles = theme => ({
+const styles = (theme) => ({
   root: {
-    padding: theme.spacing(5)
+    padding: theme.spacing(5),
   },
   quickSelections: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 });
 
 const quickSelections = [
   {
     title: 'Last month',
     getDateRange: () => ({
-      startDate: moment()
-        .subtract(1, 'month')
-        .startOf('month'),
-      endDate: moment()
-        .startOf('month')
-        .subtract(1, 'day')
-    })
+      startDate: moment().subtract(1, 'month').startOf('month'),
+      endDate: moment().startOf('month').subtract(1, 'day'),
+    }),
   },
   {
     title: 'This month',
     getDateRange: () => ({
       startDate: moment().startOf('month'),
-      endDate: moment()
-        .endOf('month')
-        .startOf('day')
+      endDate: moment().endOf('month').startOf('day'),
     }),
-    default: true
+    default: true,
   },
   {
     title: 'This year',
     getDateRange: () => ({
       startDate: moment().startOf('year'),
-      endDate: moment()
-        .endOf('month')
-        .startOf('day')
-    })
-  }
+      endDate: moment().endOf('month').startOf('day'),
+    }),
+  },
 ];
 
-const DateRangeSelector = props => {
+const DateRangeSelector = (props) => {
   const { startDate, endDate, onChange, classes } = props;
   const currentYear = moment().year();
 
@@ -64,10 +56,10 @@ const DateRangeSelector = props => {
             maxDate={endDate}
             autoOk
             showTodayButton
-            onChange={date =>
+            onChange={(date) =>
               onChange({
                 startDate: date,
-                endDate
+                endDate,
               })
             }
           />
@@ -80,17 +72,17 @@ const DateRangeSelector = props => {
             minDate={startDate}
             autoOk
             showTodayButton
-            onChange={date =>
+            onChange={(date) =>
               onChange({
                 startDate,
-                endDate: date
+                endDate: date,
               })
             }
           />
         </Grid>
       </Grid>
       <Grid container justify="space-evenly" spacing={5} className={classes.quickSelections}>
-        {quickSelections.map(selection => (
+        {quickSelections.map((selection) => (
           <Grid item key={selection.title}>
             <Button onClick={() => onChange(selection.getDateRange())} size="small">
               {selection.title}
@@ -105,9 +97,9 @@ const DateRangeSelector = props => {
 DateRangeSelector.propTypes = {
   onChange: PropTypes.func.isRequired,
   startDate: PropTypes.instanceOf(moment),
-  endDate: PropTypes.instanceOf(moment)
+  endDate: PropTypes.instanceOf(moment),
 };
 
 export default withStyles(styles, { withTheme: true })(DateRangeSelector);
 
-export const defaultDateRange = quickSelections.find(selection => selection.default).getDateRange();
+export const defaultDateRange = quickSelections.find((selection) => selection.default).getDateRange();

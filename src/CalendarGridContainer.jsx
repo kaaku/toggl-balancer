@@ -10,7 +10,7 @@ import CalendarGrid from './CalendarGrid';
 
 function getTimeEntriesForMonth(timeEntriesByDate, month) {
   return Object.keys(timeEntriesByDate)
-    .filter(date => moment(date).month() === month)
+    .filter((date) => moment(date).month() === month)
     .reduce((result, date) => Object.assign(result, { [date]: timeEntriesByDate[date] }), {});
 }
 
@@ -21,7 +21,7 @@ function getDataByMonth(startDate, endDate, timeEntriesByDate) {
     const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
     dataByMonth.push({
       firstDayOfMonth,
-      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0)
+      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0),
     });
     firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
   }
@@ -29,7 +29,7 @@ function getDataByMonth(startDate, endDate, timeEntriesByDate) {
   return dataByMonth;
 }
 
-const CalendarGridContainer = props => {
+const CalendarGridContainer = (props) => {
   const { startDate, endDate, timeEntriesByDate, classes } = props;
   if (startDate.isAfter(endDate)) {
     return null;
@@ -53,7 +53,7 @@ const CalendarGridContainer = props => {
                 useColors
                 textProps={{
                   variant: 'h2',
-                  gutterBottom: true
+                  gutterBottom: true,
                 }}
               />
             </Grid>
@@ -73,7 +73,7 @@ CalendarGridContainer.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,
   endDate: PropTypes.instanceOf(moment).isRequired,
   timeEntriesByDate: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles({}, { withTheme: true })(CalendarGridContainer);
