@@ -1,5 +1,5 @@
 import Button from '@material-ui/core/Button';
-import { DatePicker } from '@material-ui/pickers';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Grid from '@material-ui/core/Grid';
 import moment from 'moment';
 import Paper from '@material-ui/core/Paper';
