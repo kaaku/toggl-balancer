@@ -55,7 +55,7 @@ class ApiTokenDialog extends Component {
         <DialogContent>
           <DialogContentText>
             Your Toggl time entries will be fetched using your API Token, which you can find from your{' '}
-            <a href="https://www.toggl.com/app/profile" target="_blank" rel="noopener noreferrer">
+            <a href="https://track.toggl.com/profile" target="_blank" rel="noopener noreferrer">
               Toggl profile <Icon fontSize="small">open_in_new</Icon>
             </a>
           </DialogContentText>

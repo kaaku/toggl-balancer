@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const BASE_URL = 'https://www.toggl.com/api/v8/time_entries';
+const BASE_URL = 'https://api.track.toggl.com/api/v9/me/time_entries';
 
 const workdayDuration = moment.duration('7:30').asSeconds();
 
