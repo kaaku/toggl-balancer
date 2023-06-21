@@ -4,7 +4,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 
-const Duration = (props) => {
+function Duration(props) {
   const { duration, useColors, textProps } = props;
 
   // eslint-disable-next-line no-nested-ternary
@@ -22,7 +22,7 @@ const Duration = (props) => {
       {durationFormatted}
     </Typography>
   );
-};
+}
 
 Duration.propTypes = {
   duration: PropTypes.number.isRequired,

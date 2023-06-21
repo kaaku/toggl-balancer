@@ -29,7 +29,7 @@ function getDataByMonth(startDate, endDate, timeEntriesByDate) {
   return dataByMonth;
 }
 
-const CalendarGridContainer = (props) => {
+function CalendarGridContainer(props) {
   const { startDate, endDate, timeEntriesByDate, classes } = props;
   if (startDate.isAfter(endDate)) {
     return null;
@@ -67,7 +67,7 @@ const CalendarGridContainer = (props) => {
       ))}
     </Grid>
   );
-};
+}
 
 CalendarGridContainer.propTypes = {
   startDate: PropTypes.instanceOf(moment).isRequired,

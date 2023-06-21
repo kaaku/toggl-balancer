@@ -41,7 +41,7 @@ const quickSelections = [
   },
 ];
 
-const DateRangeSelector = (props) => {
+function DateRangeSelector(props) {
   const { startDate, endDate, onChange, classes } = props;
   const currentYear = moment().year();
 
@@ -92,7 +92,7 @@ const DateRangeSelector = (props) => {
       </Grid>
     </Paper>
   );
-};
+}
 
 DateRangeSelector.propTypes = {
   onChange: PropTypes.func.isRequired,

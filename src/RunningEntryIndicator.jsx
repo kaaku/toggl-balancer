@@ -19,7 +19,7 @@ const styles = (theme) => ({
   },
 });
 
-const RunningEntryIndicator = (props) => {
+function RunningEntryIndicator(props) {
   const { size, visible, classes } = props;
   return visible ? (
     <Box className={classes.root} component="span">
@@ -30,7 +30,7 @@ const RunningEntryIndicator = (props) => {
       </Tooltip>
     </Box>
   ) : null;
-};
+}
 
 RunningEntryIndicator.propTypes = {
   size: PropTypes.oneOf(['default', 'small', 'large']),

@@ -46,7 +46,7 @@ const styles = (theme) => ({
   },
 });
 
-const CalendarCell = (props) => {
+function CalendarCell(props) {
   const { date, duration, hasRunningEntry, disabled, classes } = props;
   const hasDuration = Number.isSafeInteger(duration);
   const isCurrentDate = moment().isSame(date, 'day');
@@ -102,7 +102,7 @@ const CalendarCell = (props) => {
       )}
     </TimeEntryContext.Consumer>
   );
-};
+}
 
 CalendarCell.propTypes = {
   date: PropTypes.string.isRequired,

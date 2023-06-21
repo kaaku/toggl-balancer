@@ -22,7 +22,7 @@ function getDurationData(timeEntriesByDate, fromDate, toDate) {
   return durationData;
 }
 
-const CalendarGrid = (props) => {
+function CalendarGrid(props) {
   const { year, month, timeEntriesByDate } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -60,7 +60,7 @@ const CalendarGrid = (props) => {
       ))}
     </>
   );
-};
+}
 
 CalendarGrid.propTypes = {
   year: PropTypes.number.isRequired,
