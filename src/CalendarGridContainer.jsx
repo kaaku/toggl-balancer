@@ -1,9 +1,9 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
+import withStyles from '@mui/styles/withStyles';
 
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
@@ -38,10 +38,10 @@ function CalendarGridContainer(props) {
   const dataByMonth = getDataByMonth(startDate, endDate, timeEntriesByDate);
 
   return (
-    <Grid container justify="center" spacing={5} className={classes.root}>
+    <Grid container justifyContent="center" spacing={5} className={classes.root}>
       {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
         <Grid item xs={12} xl={6} key={firstDayOfMonth.format('YYYY-MM')}>
-          <Grid container justify="space-between">
+          <Grid container justifyContent="space-between">
             <Grid item>
               <Typography variant="h2" gutterBottom>
                 {firstDayOfMonth.format('MMMM YYYY')}

@@ -1,11 +1,11 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import moment from 'moment';
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
 const styles = (theme) => ({
   root: {
@@ -47,7 +47,7 @@ function DateRangeSelector(props) {
 
   return (
     <Paper className={classes.root}>
-      <Grid container justify="space-evenly" spacing={5}>
+      <Grid container justifyContent="space-evenly" spacing={5}>
         <Grid item>
           <DatePicker
             label="From"
@@ -81,7 +81,7 @@ function DateRangeSelector(props) {
           />
         </Grid>
       </Grid>
-      <Grid container justify="space-evenly" spacing={5} className={classes.quickSelections}>
+      <Grid container justifyContent="space-evenly" spacing={5} className={classes.quickSelections}>
         {quickSelections.map((selection) => (
           <Grid item key={selection.title}>
             <Button onClick={() => onChange(selection.getDateRange())} size="small">

@@ -1,10 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import Box from '@material-ui/core/Box';
-import Icon from '@material-ui/core/Icon';
-import Tooltip from '@material-ui/core/Tooltip';
-import { red } from '@material-ui/core/colors';
-import { withStyles } from '@material-ui/core/styles';
+import Box from '@mui/material/Box';
+import Icon from '@mui/material/Icon';
+import Tooltip from '@mui/material/Tooltip';
+import { red } from '@mui/material/colors';
+import withStyles from '@mui/styles/withStyles';
 
 const spacingBySize = { small: 1, default: 1.5, large: 2 };
 const styles = (theme) => ({

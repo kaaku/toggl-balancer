@@ -1,13 +1,13 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import SnackbarContent from '@material-ui/core/es/SnackbarContent/SnackbarContent';
-import Typography from '@material-ui/core/es/Typography/Typography';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import Typography from '@mui/material/Typography';
 
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
@@ -173,7 +173,7 @@ class App extends Component {
         >
           Change API Token
         </Button>
-        <Grid container justify="center" className={classes.dateSelectorContainer}>
+        <Grid container justifyContent="center" className={classes.dateSelectorContainer}>
           <Grid item>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />
           </Grid>

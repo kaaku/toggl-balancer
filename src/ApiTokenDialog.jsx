@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Icon from '@material-ui/core/Icon';
-import TextField from '@material-ui/core/TextField';
-import { withStyles } from '@material-ui/core/styles';
+import Button from '@mui/material/Button';
+import Checkbox from '@mui/material/Checkbox';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Icon from '@mui/material/Icon';
+import TextField from '@mui/material/TextField';
+import withStyles from '@mui/styles/withStyles';
 
 class ApiTokenDialog extends Component {
   constructor(props) {
@@ -45,12 +45,7 @@ class ApiTokenDialog extends Component {
     const { apiToken, rememberMe } = this.state;
 
     return (
-      <Dialog
-        open={open}
-        disableBackdropClick={mandatory}
-        disableEscapeKeyDown={mandatory}
-        aria-labelledby="form-dialog-title"
-      >
+      <Dialog open={open} disableEscapeKeyDown={mandatory} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">Enter your Toggl API Token</DialogTitle>
         <DialogContent>
           <DialogContentText>

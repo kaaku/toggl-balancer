@@ -1,8 +1,8 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Grid';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@mui/styles/withStyles';
 
 import CalendarCell from './CalendarCell';
 
