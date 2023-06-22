@@ -66,11 +66,7 @@ class ApiTokenDialog extends Component {
           />
           <FormControlLabel
             control={
-              <Checkbox
-                color="primary"
-                checked={rememberMe}
-                onChange={(e, checked) => this.setState({ rememberMe: checked })}
-              />
+              <Checkbox checked={rememberMe} onChange={(e, checked) => this.setState({ rememberMe: checked })} />
             }
             label="Remember me"
           />

@@ -75,7 +75,6 @@ function CalendarCell(props) {
                   checked={isWorkingDay(workdayOverrides)}
                   onChange={() => toggleWorkday(date)}
                   className={classes.overrideToggle}
-                  color="primary"
                 />
               </Tooltip>
             )}
