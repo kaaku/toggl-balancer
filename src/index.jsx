@@ -1,5 +1,5 @@
 import CssBaseline from '@mui/material/CssBaseline';
-import { createTheme } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
@@ -7,7 +7,6 @@ import 'moment/locale/en-gb';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { StyledEngineProvider } from '@mui/material';
-import { ThemeProvider } from '@mui/styles';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
