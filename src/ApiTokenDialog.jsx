@@ -55,6 +55,7 @@ class ApiTokenDialog extends Component {
             </a>
           </DialogContentText>
           <TextField
+            variant="standard"
             type="password"
             autoFocus
             fullWidth
