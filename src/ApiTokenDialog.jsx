@@ -76,12 +76,8 @@ class ApiTokenDialog extends Component {
           />
         </DialogContent>
         <DialogActions>
-          {!mandatory && (
-            <Button color="primary" onClick={this.handleCancel}>
-              Cancel
-            </Button>
-          )}
-          <Button variant="contained" color="primary" onClick={this.handleSubmit} disabled={!apiToken}>
+          {!mandatory && <Button onClick={this.handleCancel}>Cancel</Button>}
+          <Button variant="contained" onClick={this.handleSubmit} disabled={!apiToken}>
             Submit
           </Button>
         </DialogActions>

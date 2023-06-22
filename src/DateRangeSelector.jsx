@@ -84,9 +84,7 @@ function DateRangeSelector(props) {
       <Grid container justifyContent="space-evenly" spacing={5} className={classes.quickSelections}>
         {quickSelections.map((selection) => (
           <Grid item key={selection.title}>
-            <Button onClick={() => onChange(selection.getDateRange())} size="small">
-              {selection.title}
-            </Button>
+            <Button onClick={() => onChange(selection.getDateRange())}>{selection.title}</Button>
           </Grid>
         ))}
       </Grid>

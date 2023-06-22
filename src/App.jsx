@@ -166,11 +166,7 @@ class App extends Component {
           oldApiToken={apiToken}
           onClose={this.handleDialogClose}
         />
-        <Button
-          className={classes.changeApiToken}
-          color="primary"
-          onClick={() => this.setState({ showApiTokenDialog: true })}
-        >
+        <Button className={classes.changeApiToken} onClick={() => this.setState({ showApiTokenDialog: true })}>
           Change API Token
         </Button>
         <Grid container justifyContent="center" className={classes.dateSelectorContainer}>
