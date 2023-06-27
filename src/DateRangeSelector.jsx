@@ -5,16 +5,6 @@ import moment from 'moment';
 import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
-import withStyles from '@mui/styles/withStyles';
-
-const styles = (theme) => ({
-  root: {
-    padding: theme.spacing(5),
-  },
-  quickSelections: {
-    marginTop: theme.spacing(2),
-  },
-});
 
 const quickSelections = [
   {
@@ -41,12 +31,12 @@ const quickSelections = [
   },
 ];
 
-function DateRangeSelector(props) {
-  const { startDate, endDate, onChange, classes } = props;
+export function DateRangeSelector(props) {
+  const { startDate, endDate, onChange } = props;
   const currentYear = moment().year();
 
   return (
-    <Paper className={classes.root}>
+    <Paper sx={{ p: 5 }}>
       <Grid container justifyContent="space-evenly" spacing={5}>
         <Grid item>
           <DatePicker
@@ -81,7 +71,7 @@ function DateRangeSelector(props) {
           />
         </Grid>
       </Grid>
-      <Grid container justifyContent="space-evenly" spacing={5} className={classes.quickSelections}>
+      <Grid container justifyContent="space-evenly" spacing={5} sx={{ mt: 2 }}>
         {quickSelections.map((selection) => (
           <Grid item key={selection.title}>
             <Button onClick={() => onChange(selection.getDateRange())}>{selection.title}</Button>
@@ -98,10 +88,6 @@ DateRangeSelector.propTypes = {
   startDate: PropTypes.instanceOf(moment),
   // eslint-disable-next-line react/require-default-props
   endDate: PropTypes.instanceOf(moment),
-  // eslint-disable-next-line react/forbid-prop-types
-  classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles, { withTheme: true })(DateRangeSelector);
 
 export const defaultDateRange = quickSelections.find((selection) => selection.default).getDateRange();

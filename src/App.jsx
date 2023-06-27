@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
-import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
+import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
 import { timeEntryStore } from './TimeEntryStore';
 import Duration from './Duration';
 import RunningEntryIndicator from './RunningEntryIndicator';
