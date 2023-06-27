@@ -6,7 +6,6 @@ import moment from 'moment';
 import 'moment/locale/en-gb';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { StyledEngineProvider } from '@mui/material';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
@@ -16,14 +15,12 @@ moment.locale('en-gb');
 const theme = createTheme();
 
 const root = () => (
-  <StyledEngineProvider injectFirst>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <LocalizationProvider dateAdapter={AdapterMoment}>
-        <App />
-      </LocalizationProvider>
-    </ThemeProvider>
-  </StyledEngineProvider>
+  <ThemeProvider theme={theme}>
+    <CssBaseline />
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <App />
+    </LocalizationProvider>
+  </ThemeProvider>
 );
 
 ReactDOM.render(root(), document.getElementById('root'));
