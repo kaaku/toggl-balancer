@@ -10,9 +10,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
-import withStyles from '@mui/styles/withStyles';
 
-class ApiTokenDialog extends Component {
+export default class ApiTokenDialog extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -94,5 +93,3 @@ ApiTokenDialog.defaultProps = {
   open: true,
   mandatory: false,
 };
-
-export default withStyles({}, { withTheme: true })(ApiTokenDialog);

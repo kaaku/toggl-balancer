@@ -2,7 +2,6 @@ import Grid from '@mui/material/Grid';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import withStyles from '@mui/styles/withStyles';
 
 import CalendarCell from './CalendarCell';
 
@@ -22,7 +21,7 @@ function getDurationData(timeEntriesByDate, fromDate, toDate) {
   return durationData;
 }
 
-function CalendarGrid(props) {
+export default function CalendarGrid(props) {
   const { year, month, timeEntriesByDate } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -68,5 +67,3 @@ CalendarGrid.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   timeEntriesByDate: PropTypes.object.isRequired,
 };
-
-export default withStyles({}, { withTheme: true })(CalendarGrid);

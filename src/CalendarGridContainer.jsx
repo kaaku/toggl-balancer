@@ -3,7 +3,6 @@ import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@mui/material/Typography';
-import withStyles from '@mui/styles/withStyles';
 
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
@@ -29,8 +28,8 @@ function getDataByMonth(startDate, endDate, timeEntriesByDate) {
   return dataByMonth;
 }
 
-function CalendarGridContainer(props) {
-  const { startDate, endDate, timeEntriesByDate, classes } = props;
+export default function CalendarGridContainer(props) {
+  const { startDate, endDate, timeEntriesByDate } = props;
   if (startDate.isAfter(endDate)) {
     return null;
   }
@@ -38,7 +37,7 @@ function CalendarGridContainer(props) {
   const dataByMonth = getDataByMonth(startDate, endDate, timeEntriesByDate);
 
   return (
-    <Grid container justifyContent="center" spacing={5} className={classes.root}>
+    <Grid container justifyContent="center" spacing={5}>
       {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
         <Grid item xs={12} xl={6} key={firstDayOfMonth.format('YYYY-MM')}>
           <Grid container justifyContent="space-between">
@@ -74,8 +73,4 @@ CalendarGridContainer.propTypes = {
   endDate: PropTypes.instanceOf(moment).isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   timeEntriesByDate: PropTypes.object.isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  classes: PropTypes.object.isRequired,
 };
-
-export default withStyles({}, { withTheme: true })(CalendarGridContainer);
