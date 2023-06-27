@@ -49,7 +49,6 @@ class App extends Component {
         workdayOverrides = JSON.parse(workdayOverridesString);
       }
     } catch (e) {
-      console.warn(`Couldn't parse workday overrides from localStorage: ${workdayOverridesString}`);
       workdayOverrides = {};
     }
     const dateRange =
