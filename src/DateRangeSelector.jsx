@@ -1,6 +1,6 @@
 import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
 import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
@@ -38,7 +38,7 @@ export function DateRangeSelector(props) {
   return (
     <Paper sx={{ p: 5 }}>
       <Grid container justifyContent="space-evenly" spacing={5}>
-        <Grid item>
+        <Grid>
           <DatePicker
             label="From"
             format={startDate && startDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
@@ -54,7 +54,7 @@ export function DateRangeSelector(props) {
             }
           />
         </Grid>
-        <Grid item>
+        <Grid>
           <DatePicker
             label="To"
             format={endDate && endDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
@@ -73,7 +73,7 @@ export function DateRangeSelector(props) {
       </Grid>
       <Grid container justifyContent="space-evenly" spacing={5} sx={{ mt: 2 }}>
         {quickSelections.map((selection) => (
-          <Grid item key={selection.title}>
+          <Grid key={selection.title}>
             <Button onClick={() => onChange(selection.getDateRange())}>{selection.title}</Button>
           </Grid>
         ))}

@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -39,14 +39,14 @@ export default function CalendarGridContainer(props) {
   return (
     <Grid container justifyContent="center" spacing={5}>
       {dataByMonth.map(({ firstDayOfMonth, totalDiff }) => (
-        <Grid item xs={12} xl={6} key={firstDayOfMonth.format('YYYY-MM')}>
+        <Grid xs={12} xl={6} key={firstDayOfMonth.format('YYYY-MM')}>
           <Grid container justifyContent="space-between">
-            <Grid item>
+            <Grid>
               <Typography variant="h2" gutterBottom>
                 {firstDayOfMonth.format('MMMM YYYY')}
               </Typography>
             </Grid>
-            <Grid item>
+            <Grid>
               <Duration
                 duration={totalDiff}
                 useColors

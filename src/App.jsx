@@ -1,6 +1,6 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
 import React, { Component } from 'react';
 import SnackbarContent from '@mui/material/SnackbarContent';
@@ -148,11 +148,11 @@ export default class App extends Component {
           Change API Token
         </Button>
         <Grid container justifyContent="center" sx={{ mt: 5, mb: 10 }}>
-          <Grid item>
+          <Grid>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />
           </Grid>
           {!startDate.isSame(endDate, 'month') && (
-            <Grid item xs={12}>
+            <Grid xs={12}>
               <Typography variant="h2" align="center" sx={{ mt: 3 }}>
                 Total: <Duration duration={totalTimeDiff} useColors textProps={{ variant: 'inherit', inline: true }} />
                 <RunningEntryIndicator size="large" visible={isTrackingOngoing} />
@@ -160,7 +160,7 @@ export default class App extends Component {
             </Grid>
           )}
           {error && (
-            <Grid item>
+            <Grid>
               <SnackbarContent sx={{ mt: 3, bgcolor: 'error.main' }} message={error} />
             </Grid>
           )}

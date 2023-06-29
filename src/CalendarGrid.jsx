@@ -1,4 +1,4 @@
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -46,7 +46,7 @@ export default function CalendarGrid(props) {
       {weeks.map((week) => (
         <Grid container spacing={1} key={moment(week[0]).week()}>
           {week.map((date) => (
-            <Grid item xs key={date}>
+            <Grid xs key={date}>
               <CalendarCell
                 date={date}
                 duration={durationData[date].duration}
