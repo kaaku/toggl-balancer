@@ -63,14 +63,9 @@ export default function CalendarCell(props) {
             </Box>
           </Box>
           {hasDuration && (
-            <Duration
-              duration={duration}
-              useColors
-              textProps={{
-                variant: 'h6',
-                align: 'center',
-              }}
-            />
+            <Typography variant="h6" align="center">
+              <Duration duration={duration} useColors />
+            </Typography>
           )}
           {!disabled && !hasDuration && (
             <Typography variant="h6" color="textSecondary" align="center">

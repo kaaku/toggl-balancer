@@ -47,14 +47,9 @@ export default function CalendarGridContainer(props) {
               </Typography>
             </Grid>
             <Grid>
-              <Duration
-                duration={totalDiff}
-                useColors
-                textProps={{
-                  variant: 'h2',
-                  gutterBottom: true,
-                }}
-              />
+              <Typography variant="h2" gutterBottom>
+                <Duration duration={totalDiff} useColors />
+              </Typography>
             </Grid>
           </Grid>
           <CalendarGrid

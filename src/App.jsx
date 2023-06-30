@@ -154,7 +154,7 @@ export default class App extends Component {
           {!startDate.isSame(endDate, 'month') && (
             <Grid xs={12}>
               <Typography variant="h2" align="center" sx={{ mt: 3 }}>
-                Total: <Duration duration={totalTimeDiff} useColors textProps={{ variant: 'inherit', inline: true }} />
+                Total: <Duration duration={totalTimeDiff} useColors />
                 <RunningEntryIndicator size="large" visible={isTrackingOngoing} />
               </Typography>
             </Grid>
