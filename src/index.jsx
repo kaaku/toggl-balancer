@@ -5,7 +5,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/en-gb';
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
@@ -23,7 +23,7 @@ const root = () => (
   </ThemeProvider>
 );
 
-ReactDOM.render(root(), document.getElementById('root'));
+createRoot(document.getElementById('root')).render(root());
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
