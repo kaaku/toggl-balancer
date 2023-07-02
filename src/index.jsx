@@ -1,26 +1,25 @@
-import CssBaseline from '@material-ui/core/CssBaseline';
-import { createMuiTheme } from '@material-ui/core/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import moment from 'moment';
 import 'moment/locale/en-gb';
-import MomentUtils from '@date-io/moment';
-import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { ThemeProvider } from '@material-ui/styles';
 import * as serviceWorker from './serviceWorker';
 
 import App from './App';
 
 moment.locale('en-gb');
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 const root = () => (
   <ThemeProvider theme={theme}>
     <CssBaseline />
-    <MuiPickersUtilsProvider utils={MomentUtils}>
+    <LocalizationProvider dateAdapter={AdapterMoment}>
       <App />
-    </MuiPickersUtilsProvider>
+    </LocalizationProvider>
   </ThemeProvider>
 );
 

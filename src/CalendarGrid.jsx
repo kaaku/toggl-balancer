@@ -1,8 +1,7 @@
-import Grid from '@material-ui/core/Grid';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
 
 import CalendarCell from './CalendarCell';
 
@@ -22,7 +21,7 @@ function getDurationData(timeEntriesByDate, fromDate, toDate) {
   return durationData;
 }
 
-function CalendarGrid(props) {
+export default function CalendarGrid(props) {
   const { year, month, timeEntriesByDate } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -47,7 +46,7 @@ function CalendarGrid(props) {
       {weeks.map((week) => (
         <Grid container spacing={1} key={moment(week[0]).week()}>
           {week.map((date) => (
-            <Grid item xs key={date}>
+            <Grid xs key={date}>
               <CalendarCell
                 date={date}
                 duration={durationData[date].duration}
@@ -68,5 +67,3 @@ CalendarGrid.propTypes = {
   // eslint-disable-next-line react/forbid-prop-types
   timeEntriesByDate: PropTypes.object.isRequired,
 };
-
-export default withStyles({}, { withTheme: true })(CalendarGrid);
