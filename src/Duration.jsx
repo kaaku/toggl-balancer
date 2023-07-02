@@ -1,23 +1,26 @@
 import moment from 'moment';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import { withStyles } from '@material-ui/core/styles';
+import Typography from '@mui/material/Typography';
 
-function Duration(props) {
-  const { duration, useColors, textProps } = props;
+export default function Duration(props) {
+  const { duration, useColors } = props;
 
-  // eslint-disable-next-line no-nested-ternary
-  const sign = duration === 0 ? '' : duration > 0 ? '+' : '-';
+  let sign = '';
+  if (duration > 0) {
+    sign = '+';
+  } else if (duration < 0) {
+    sign = '-';
+  }
   const durationObj = moment.duration(Math.abs(duration), 'seconds');
   const durationFormatted = `${Math.floor(durationObj.asHours())}:${durationObj.minutes().toString().padStart(2, '0')}`;
-  if (useColors) {
-    textProps.color = duration < 0 ? 'error' : 'primary';
+  let color = null;
+  if (useColors && duration !== 0) {
+    color = duration < 0 ? 'error' : 'primary';
   }
 
   return (
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    <Typography {...textProps}>
+    <Typography color={color} variant="inherit" sx={{ display: 'inline-block' }}>
       {sign}
       {durationFormatted}
     </Typography>
@@ -27,13 +30,8 @@ function Duration(props) {
 Duration.propTypes = {
   duration: PropTypes.number.isRequired,
   useColors: PropTypes.bool,
-  // eslint-disable-next-line react/forbid-prop-types
-  textProps: PropTypes.object,
 };
 
 Duration.defaultProps = {
   useColors: false,
-  textProps: {},
 };
-
-export default withStyles({}, { withTheme: true })(Duration);

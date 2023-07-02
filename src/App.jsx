@@ -1,45 +1,21 @@
-import Box from '@material-ui/core/Box';
-import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Unstable_Grid2';
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import React, { Component } from 'react';
-import SnackbarContent from '@material-ui/core/es/SnackbarContent/SnackbarContent';
-import Typography from '@material-ui/core/es/Typography/Typography';
+import SnackbarContent from '@mui/material/SnackbarContent';
+import Typography from '@mui/material/Typography';
 
-import { withStyles } from '@material-ui/core/styles';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
-import DateRangeSelector, { defaultDateRange } from './DateRangeSelector';
+import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
 import { timeEntryStore } from './TimeEntryStore';
 import Duration from './Duration';
 import RunningEntryIndicator from './RunningEntryIndicator';
 import { TimeEntryContext } from './TimeEntryContext';
 import './styles.css';
 
-const styles = (theme) => ({
-  root: {
-    padding: theme.spacing(4),
-  },
-  changeApiToken: {
-    position: 'absolute',
-    top: theme.spacing(2),
-    right: theme.spacing(2),
-  },
-  dateSelectorContainer: {
-    marginTop: theme.spacing(5),
-    marginBottom: theme.spacing(10),
-  },
-  totalTimeDiff: {
-    marginTop: theme.spacing(3),
-  },
-  errorNotification: {
-    marginTop: theme.spacing(3),
-    backgroundColor: theme.palette.error.main,
-  },
-});
-
-class App extends Component {
+export default class App extends Component {
   constructor(props) {
     super(props);
     const { apiToken, startDate, endDate, workdayOverrides: workdayOverridesString } = localStorage;
@@ -149,7 +125,6 @@ class App extends Component {
       timeEntryContext: { timeEntriesByDate },
       error,
     } = this.state;
-    const { classes } = this.props;
 
     if (!apiToken) {
       return <ApiTokenDialog mandatory onClose={this.handleDialogClose} />;
@@ -159,7 +134,7 @@ class App extends Component {
     const isTrackingOngoing = Object.values(timeEntriesByDate).some((entry) => entry.hasRunningEntry);
 
     return (
-      <Box className={classes.root}>
+      <Box sx={{ padding: 4 }}>
         <ApiTokenDialog
           open={showApiTokenDialog}
           mandatory={false}
@@ -167,27 +142,26 @@ class App extends Component {
           onClose={this.handleDialogClose}
         />
         <Button
-          className={classes.changeApiToken}
-          color="primary"
+          sx={{ position: 'absolute', top: (theme) => theme.spacing(2), right: (theme) => theme.spacing(2) }}
           onClick={() => this.setState({ showApiTokenDialog: true })}
         >
           Change API Token
         </Button>
-        <Grid container justify="center" className={classes.dateSelectorContainer}>
-          <Grid item>
+        <Grid container justifyContent="center" sx={{ mt: 5, mb: 10 }}>
+          <Grid>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />
           </Grid>
           {!startDate.isSame(endDate, 'month') && (
-            <Grid item xs={12}>
-              <Typography variant="h2" align="center" className={classes.totalTimeDiff}>
-                Total: <Duration duration={totalTimeDiff} useColors textProps={{ variant: 'inherit', inline: true }} />
+            <Grid xs={12}>
+              <Typography variant="h2" align="center" sx={{ mt: 3 }}>
+                Total: <Duration duration={totalTimeDiff} useColors />
                 <RunningEntryIndicator size="large" visible={isTrackingOngoing} />
               </Typography>
             </Grid>
           )}
           {error && (
-            <Grid item>
-              <SnackbarContent className={classes.errorNotification} message={error} />
+            <Grid>
+              <SnackbarContent sx={{ mt: 3, bgcolor: 'error.main' }} message={error} />
             </Grid>
           )}
         </Grid>
@@ -200,10 +174,3 @@ class App extends Component {
     );
   }
 }
-
-App.propTypes = {
-  // eslint-disable-next-line react/forbid-prop-types
-  classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles, { withTheme: true })(App);
