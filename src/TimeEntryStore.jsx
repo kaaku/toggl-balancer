@@ -22,10 +22,10 @@ export const timeEntryStore = {
     const url = new URL(BASE_URL);
     const params = {};
     if (start) {
-      params.start_date = start.toISOString();
+      params.start_date = start.format('YYYY-MM-DD');
     }
     if (end) {
-      params.end_date = end.toISOString();
+      params.end_date = end.format('YYYY-MM-DD');
     }
     url.search = new URLSearchParams(params);
 
