@@ -10,11 +10,16 @@
     "@mui/material": "^5.13.6",
     "@mui/system": "^5.13.6",
     "@mui/x-date-pickers": "^6.8.0",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^20.3.3",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
     "moment": "^2.29.4",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "typescript": "^5.1.6"
   },
   "scripts": {
     "start": "react-scripts start",
