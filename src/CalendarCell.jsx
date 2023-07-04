@@ -11,7 +11,7 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './time-entries/TimeEntryContext';
+import TimeEntryContext from './time-entries/TimeEntryContext';
 import { timeEntryStore } from './time-entries/TimeEntryStore';
 
 export default function CalendarCell(props) {

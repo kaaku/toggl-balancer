@@ -12,7 +12,7 @@ import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
 import { timeEntryStore } from './time-entries/TimeEntryStore';
 import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './time-entries/TimeEntryContext';
+import TimeEntryContext from './time-entries/TimeEntryContext';
 import './styles.css';
 
 export default class App extends Component {
