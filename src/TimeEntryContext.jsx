@@ -4,5 +4,6 @@ import React from 'react';
 export const TimeEntryContext = React.createContext({
   timeEntriesByDate: {},
   workdayOverrides: {},
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   toggleWorkday: () => {},
 });
