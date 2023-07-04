@@ -11,8 +11,8 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './TimeEntryContext';
-import { timeEntryStore } from './TimeEntryStore';
+import { TimeEntryContext } from './time-entries/TimeEntryContext';
+import { timeEntryStore } from './time-entries/TimeEntryStore';
 
 export default function CalendarCell(props) {
   const { date, duration, hasRunningEntry, disabled } = props;

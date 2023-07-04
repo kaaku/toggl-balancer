@@ -9,10 +9,10 @@ import Typography from '@mui/material/Typography';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
-import { timeEntryStore } from './TimeEntryStore';
+import { timeEntryStore } from './time-entries/TimeEntryStore';
 import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './TimeEntryContext';
+import { TimeEntryContext } from './time-entries/TimeEntryContext';
 import './styles.css';
 
 export default class App extends Component {
