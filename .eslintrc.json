@@ -1,12 +1,15 @@
 {
-    "extends": ["airbnb", "prettier"],
-    "plugins": ["prettier"],
+    "extends": ["airbnb", "prettier", "eslint:recommended", "plugin:@typescript-eslint/recommended"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "prettier"],
     "env": {
         "browser": true
     },
     "ignorePatterns": ["serviceWorker.js"],
     "rules": {
         "prettier/prettier": ["error"],
-        "linebreak-style": 0
-    }
+        "linebreak-style": 0,
+        "react/jsx-filename-extension": [1, { "extensions": [".jsx", ".tsx"] }]
+    },
+    "root": true
 }
