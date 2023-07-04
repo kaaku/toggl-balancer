@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 
-import Duration from './Duration';
+import Duration from './Duration.tsx';
 import CalendarGrid from './CalendarGrid';
 
 function getTimeEntriesForMonth(timeEntriesByDate, month) {

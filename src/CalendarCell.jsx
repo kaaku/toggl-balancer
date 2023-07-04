@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
-import Duration from './Duration';
+import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
 import { TimeEntryContext } from './TimeEntryContext';
 import { timeEntryStore } from './TimeEntryStore';

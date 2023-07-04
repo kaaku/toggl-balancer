@@ -10,7 +10,7 @@ import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
 import { timeEntryStore } from './TimeEntryStore';
-import Duration from './Duration';
+import Duration from './Duration.tsx';
 import RunningEntryIndicator from './RunningEntryIndicator';
 import { TimeEntryContext } from './TimeEntryContext';
 import './styles.css';
