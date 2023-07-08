@@ -3,11 +3,15 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 
 interface Props {
-  duration: number;
+  duration: number | null;
   useColors: boolean;
 }
 
 export default function Duration({ duration, useColors = false }: Props) {
+  if (typeof duration !== 'number' || !Number.isSafeInteger(duration)) {
+    return null;
+  }
+
   let sign = '';
   if (duration > 0) {
     sign = '+';
