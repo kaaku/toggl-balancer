@@ -1,13 +1,13 @@
 import React from 'react';
 import { AggregateTimeEntries } from './TimeEntryStore';
 
-interface TimeEntryContext {
+export interface TimeEntryContextType {
   timeEntriesByDate: { [date: string]: AggregateTimeEntries };
   workdayOverrides: { [date: string]: boolean };
   toggleWorkday: (date: string) => void;
 }
 
-export default React.createContext<TimeEntryContext>({
+export const TimeEntryContext = React.createContext<TimeEntryContextType>({
   timeEntriesByDate: {},
   workdayOverrides: {},
   // eslint-disable-next-line @typescript-eslint/no-empty-function
