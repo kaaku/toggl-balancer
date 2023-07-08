@@ -23,7 +23,7 @@ const root = () => (
   </ThemeProvider>
 );
 
-createRoot(document.getElementById('root')).render(root());
+createRoot(document.getElementById('root') as Element).render(root());
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

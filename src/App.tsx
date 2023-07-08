@@ -24,9 +24,9 @@ interface State {
   error?: string;
 }
 
-export default class App extends Component<void, State> {
+export default class App extends Component<unknown, State> {
   constructor() {
-    super();
+    super(null);
     const { apiToken, startDate, endDate, workdayOverrides: workdayOverridesString } = localStorage;
     let workdayOverrides = {};
     try {
