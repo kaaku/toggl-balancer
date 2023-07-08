@@ -136,7 +136,7 @@ export default class App extends Component<void, State> {
     } = this.state;
 
     if (!apiToken) {
-      return <ApiTokenDialog mandatory onClose={this.handleDialogClose} />;
+      return <ApiTokenDialog open mandatory onClose={this.handleDialogClose} />;
     }
 
     const totalTimeDiff: number = Object.values(timeEntriesByDate).reduce(
