@@ -1,5 +1,4 @@
 import moment from 'moment';
-import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '@mui/material/Box';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,15 +10,22 @@ import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 
 import Duration from './Duration';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './TimeEntryContext';
-import { timeEntryStore } from './TimeEntryStore';
+import { TimeEntryContext } from './time-entries/TimeEntryContext';
+import { timeEntryStore } from './time-entries/TimeEntryStore';
 
-export default function CalendarCell(props) {
-  const { date, duration, hasRunningEntry, disabled } = props;
+interface Props {
+  date: string;
+  duration?: number | null;
+  hasRunningEntry?: boolean;
+  disabled?: boolean;
+}
+
+export default function CalendarCell({ date, duration = null, hasRunningEntry = false, disabled = false }: Props) {
   const hasDuration = Number.isSafeInteger(duration);
   const isCurrentDate = moment().isSame(date, 'day');
 
-  const isWorkingDay = (workdayOverrides) => timeEntryStore.isWorkday(date, workdayOverrides, hasDuration);
+  const isWorkingDay = (workdayOverrides: Record<string, boolean>) =>
+    timeEntryStore.isWorkday(date, workdayOverrides, hasDuration);
 
   return (
     <TimeEntryContext.Consumer>
@@ -77,16 +83,3 @@ export default function CalendarCell(props) {
     </TimeEntryContext.Consumer>
   );
 }
-
-CalendarCell.propTypes = {
-  date: PropTypes.string.isRequired,
-  duration: PropTypes.number,
-  hasRunningEntry: PropTypes.bool,
-  disabled: PropTypes.bool,
-};
-
-CalendarCell.defaultProps = {
-  duration: null,
-  hasRunningEntry: false,
-  disabled: false,
-};

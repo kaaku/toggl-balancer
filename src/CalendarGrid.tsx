@@ -1,27 +1,33 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import moment from 'moment';
-import PropTypes from 'prop-types';
+import moment, { Moment } from 'moment';
 import React from 'react';
 
 import CalendarCell from './CalendarCell';
+import { AggregateTimeEntries } from './time-entries/TimeEntryStore';
 
-function getDurationData(timeEntriesByDate, fromDate, toDate) {
-  const durationData = {};
+interface Props {
+  year: number;
+  month: number;
+  timeEntriesByDate: { [date: string]: AggregateTimeEntries };
+}
+
+function getDurationData(
+  timeEntriesByDate: { [date: string]: AggregateTimeEntries },
+  fromDate: Moment,
+  toDate: Moment
+): { [date: string]: AggregateTimeEntries } {
+  const durationData: { [date: string]: AggregateTimeEntries } = {};
   let date = moment(fromDate);
   while (date.isSameOrBefore(toDate, 'day')) {
     const dateString = date.format('YYYY-MM-DD');
-    durationData[dateString] = {
-      duration: null,
-      hasRunningEntry: false,
-      ...timeEntriesByDate[dateString],
-    };
+    durationData[dateString] = { ...timeEntriesByDate[dateString] };
     date = date.add(1, 'day');
   }
 
   return durationData;
 }
 
-export default function CalendarGrid(props) {
+export default function CalendarGrid(props: Props) {
   const { year, month, timeEntriesByDate } = props;
 
   const firstDayOfMonth = moment({ year, month: month - 1, day: 1 });
@@ -60,10 +66,3 @@ export default function CalendarGrid(props) {
     </>
   );
 }
-
-CalendarGrid.propTypes = {
-  year: PropTypes.number.isRequired,
-  month: PropTypes.oneOf([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  timeEntriesByDate: PropTypes.object.isRequired,
-};

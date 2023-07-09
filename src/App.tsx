@@ -1,7 +1,7 @@
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Unstable_Grid2';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import React, { Component } from 'react';
 import SnackbarContent from '@mui/material/SnackbarContent';
 import Typography from '@mui/material/Typography';
@@ -9,15 +9,24 @@ import Typography from '@mui/material/Typography';
 import ApiTokenDialog from './ApiTokenDialog';
 import CalendarGridContainer from './CalendarGridContainer';
 import { DateRangeSelector, defaultDateRange } from './DateRangeSelector';
-import { timeEntryStore } from './TimeEntryStore';
+import { timeEntryStore } from './time-entries/TimeEntryStore';
 import Duration from './Duration';
 import RunningEntryIndicator from './RunningEntryIndicator';
-import { TimeEntryContext } from './TimeEntryContext';
+import { TimeEntryContext, TimeEntryContextType } from './time-entries/TimeEntryContext';
 import './styles.css';
 
-export default class App extends Component {
-  constructor(props) {
-    super(props);
+interface State {
+  apiToken: string;
+  showApiTokenDialog: boolean;
+  startDate?: Moment;
+  endDate?: Moment;
+  timeEntryContext: TimeEntryContextType;
+  error?: string;
+}
+
+export default class App extends Component<unknown, State> {
+  constructor() {
+    super(null);
     const { apiToken, startDate, endDate, workdayOverrides: workdayOverridesString } = localStorage;
     let workdayOverrides = {};
     try {
@@ -37,8 +46,8 @@ export default class App extends Component {
     this.state = {
       apiToken,
       showApiTokenDialog: !apiToken,
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
+      startDate: dateRange?.startDate,
+      endDate: dateRange?.endDate,
       timeEntryContext: { timeEntriesByDate: {}, workdayOverrides, toggleWorkday: this.toggleWorkday },
     };
   }
@@ -50,14 +59,14 @@ export default class App extends Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps: never, prevState: State) {
     const { startDate, endDate, apiToken } = this.state;
     if (prevState.startDate !== startDate || prevState.endDate !== endDate || prevState.apiToken !== apiToken) {
       this.updateTimeEntries();
     }
   }
 
-  handleDialogClose({ apiToken, rememberMe }) {
+  handleDialogClose({ apiToken, rememberMe }: any) {
     const stateChange = { showApiTokenDialog: false };
     if (apiToken) {
       if (rememberMe) {
@@ -70,12 +79,12 @@ export default class App extends Component {
     this.setState(stateChange);
   }
 
-  handleDateRangeChange(dateRange) {
-    Object.keys(dateRange).forEach((key) => localStorage.setItem(key, dateRange[key].format('YYYY-MM-DD')));
+  handleDateRangeChange(dateRange: { startDate?: Moment; endDate?: Moment }) {
+    Object.entries(dateRange).forEach(([key, value]) => localStorage.setItem(key, value?.format('YYYY-MM-DD') ?? ''));
     this.setState(dateRange);
   }
 
-  toggleWorkday(date) {
+  toggleWorkday(date: string) {
     const {
       timeEntryContext,
       timeEntryContext: { workdayOverrides, timeEntriesByDate },
@@ -97,6 +106,9 @@ export default class App extends Component {
 
   updateTimeEntries() {
     const { startDate, endDate, apiToken, timeEntryContext } = this.state;
+    if (!startDate || !endDate) {
+      return;
+    }
     try {
       timeEntryStore.fetchTimeEntries(startDate, endDate, apiToken, timeEntryContext.workdayOverrides).then(
         (result) =>
@@ -110,8 +122,8 @@ export default class App extends Component {
             error: error.message,
           })
       );
-    } catch ({ message }) {
-      this.setState({ error: message });
+    } catch (e: any) {
+      this.setState({ error: e.message });
     }
   }
 
@@ -127,10 +139,13 @@ export default class App extends Component {
     } = this.state;
 
     if (!apiToken) {
-      return <ApiTokenDialog mandatory onClose={this.handleDialogClose} />;
+      return <ApiTokenDialog open mandatory onClose={this.handleDialogClose} />;
     }
 
-    const totalTimeDiff = Object.values(timeEntriesByDate).reduce((sum, entry) => sum + entry.duration, 0);
+    const totalTimeDiff: number = Object.values(timeEntriesByDate).reduce(
+      (sum, entry) => sum + (entry.duration ?? 0),
+      0
+    );
     const isTrackingOngoing = Object.values(timeEntriesByDate).some((entry) => entry.hasRunningEntry);
 
     return (
@@ -151,7 +166,7 @@ export default class App extends Component {
           <Grid>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />
           </Grid>
-          {!startDate.isSame(endDate, 'month') && (
+          {!startDate?.isSame(endDate, 'month') && (
             <Grid xs={12}>
               <Typography variant="h2" align="center" sx={{ mt: 3 }}>
                 Total: <Duration duration={totalTimeDiff} useColors />

@@ -1,14 +1,17 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import Box from '@mui/material/Box';
 import Icon from '@mui/material/Icon';
 import Tooltip from '@mui/material/Tooltip';
 import { red } from '@mui/material/colors';
 
-const spacingBySize = { small: 1, default: 1.5, large: 2 };
+interface Props {
+  size?: 'small' | 'medium' | 'large';
+  visible?: boolean;
+}
 
-export default function RunningEntryIndicator(props) {
-  const { size, visible } = props;
+const spacingBySize = { small: 1, medium: 1.5, large: 2 };
+
+export default function RunningEntryIndicator({ size = 'medium', visible = true }: Props) {
   return visible ? (
     <Box
       sx={{
@@ -32,13 +35,3 @@ export default function RunningEntryIndicator(props) {
     </Box>
   ) : null;
 }
-
-RunningEntryIndicator.propTypes = {
-  size: PropTypes.oneOf(['default', 'small', 'large']),
-  visible: PropTypes.bool,
-};
-
-RunningEntryIndicator.defaultProps = {
-  size: 'default',
-  visible: true,
-};

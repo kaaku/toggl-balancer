@@ -1,26 +1,39 @@
 import Grid from '@mui/material/Unstable_Grid2';
-import moment from 'moment';
-import PropTypes from 'prop-types';
+import moment, { Moment } from 'moment';
 import React from 'react';
 import Typography from '@mui/material/Typography';
 
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
+import { AggregateTimeEntries } from './time-entries/TimeEntryStore';
 
-function getTimeEntriesForMonth(timeEntriesByDate, month) {
+interface Props {
+  startDate?: Moment;
+  endDate?: Moment;
+  timeEntriesByDate: { [date: string]: AggregateTimeEntries };
+}
+
+function getTimeEntriesForMonth(
+  timeEntriesByDate: { [date: string]: AggregateTimeEntries },
+  month: number
+): { [date: string]: AggregateTimeEntries } {
   return Object.keys(timeEntriesByDate)
     .filter((date) => moment(date).month() === month)
     .reduce((result, date) => Object.assign(result, { [date]: timeEntriesByDate[date] }), {});
 }
 
-function getDataByMonth(startDate, endDate, timeEntriesByDate) {
-  const dataByMonth = [];
+function getDataByMonth(
+  startDate: Moment,
+  endDate: Moment,
+  timeEntriesByDate: { [date: string]: AggregateTimeEntries }
+) {
+  const dataByMonth: { firstDayOfMonth: Moment; totalDiff: number }[] = [];
   let firstDayOfMonth = moment(startDate).startOf('month');
   while (firstDayOfMonth.isSameOrBefore(endDate, 'day')) {
     const timeEntriesForMonth = getTimeEntriesForMonth(timeEntriesByDate, firstDayOfMonth.month());
     dataByMonth.push({
       firstDayOfMonth,
-      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + data.duration, 0),
+      totalDiff: Object.values(timeEntriesForMonth).reduce((result, data) => result + (data.duration ?? 0), 0),
     });
     firstDayOfMonth = moment(firstDayOfMonth).add(1, 'month');
   }
@@ -28,9 +41,9 @@ function getDataByMonth(startDate, endDate, timeEntriesByDate) {
   return dataByMonth;
 }
 
-export default function CalendarGridContainer(props) {
+export default function CalendarGridContainer(props: Props) {
   const { startDate, endDate, timeEntriesByDate } = props;
-  if (startDate.isAfter(endDate)) {
+  if (!startDate || !endDate || startDate.isAfter(endDate)) {
     return null;
   }
 
@@ -62,10 +75,3 @@ export default function CalendarGridContainer(props) {
     </Grid>
   );
 }
-
-CalendarGridContainer.propTypes = {
-  startDate: PropTypes.instanceOf(moment).isRequired,
-  endDate: PropTypes.instanceOf(moment).isRequired,
-  // eslint-disable-next-line react/forbid-prop-types
-  timeEntriesByDate: PropTypes.object.isRequired,
-};

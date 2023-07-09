@@ -1,4 +1,17 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
+
+export interface TimeEntry {
+  start: Moment;
+  end: Moment;
+  duration: number;
+  isRunning: boolean;
+}
+
+export interface AggregateTimeEntries {
+  timeEntries: TimeEntry[];
+  duration: number | null;
+  hasRunningEntry: boolean;
+}
 
 const BASE_URL = 'https://api.track.toggl.com/api/v9/me/time_entries';
 
@@ -6,28 +19,28 @@ const workdayDuration = moment.duration('7:30').asSeconds();
 
 // eslint-disable-next-line import/prefer-default-export
 export const timeEntryStore = {
-  fetchTimeEntries(startDate, endDate, apiToken, workdaySettings) {
-    if (!startDate && !endDate) {
+  fetchTimeEntries(startDate: Moment, endDate: Moment, apiToken: string, workdaySettings: { [date: string]: boolean }) {
+    if (!startDate || !endDate) {
       throw Error('Either start date or end date is required');
     } else if (!apiToken) {
       throw Error('API token is required');
     }
 
-    const start = !startDate ? null : moment(startDate).startOf('day');
-    const end = !endDate ? null : moment(endDate).add(1, 'day').startOf('day');
+    const start = moment(startDate).startOf('day');
+    const end = moment(endDate).add(1, 'day').startOf('day');
     if ((start && !start.isValid()) || (end && !end.isValid())) {
       throw Error('Start date and/or end date were invalid');
     }
 
     const url = new URL(BASE_URL);
-    const params = {};
+    const params: { start_date?: string; end_date?: string } = {};
     if (start) {
       params.start_date = start.format('YYYY-MM-DD');
     }
     if (end) {
       params.end_date = end.format('YYYY-MM-DD');
     }
-    url.search = new URLSearchParams(params);
+    url.search = new URLSearchParams(params).toString();
 
     return (
       fetch(url, {
@@ -49,13 +62,16 @@ export const timeEntryStore = {
           }
           throw Error(`Toggl responded with an unknown error (HTTP ${response.status})`);
         })
-        // eslint-disable-next-line no-use-before-define
+        // eslint-disable-next-line @typescript-eslint/no-use-before-define
         .then((timeEntries) => groupEntries(start, end, timeEntries, workdaySettings))
     );
   },
 
-  refreshDurations(timeEntriesByDate = {}, workdayOverrides = {}) {
-    const refreshed = {};
+  refreshDurations(
+    timeEntriesByDate: { [date: string]: AggregateTimeEntries } = {},
+    workdayOverrides: { [date: string]: boolean } = {}
+  ): { [date: string]: AggregateTimeEntries } {
+    const refreshed: { [date: string]: AggregateTimeEntries } = {};
 
     Object.entries(timeEntriesByDate).forEach(([date, dataForDate]) => {
       const hasTimeEntries = dataForDate.timeEntries.length > 0;
@@ -71,7 +87,7 @@ export const timeEntryStore = {
     return refreshed;
   },
 
-  isWorkday(date, workdayOverrides = {}, hasTimeEntries = false) {
+  isWorkday(date: string, workdayOverrides: { [date: string]: boolean } = {}, hasTimeEntries = false) {
     // eslint-disable-next-line no-prototype-builtins
     if (workdayOverrides.hasOwnProperty(date)) {
       return workdayOverrides[date];
@@ -84,7 +100,12 @@ export const timeEntryStore = {
   },
 };
 
-function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
+function groupEntries(
+  startDate: Moment,
+  endDate: Moment,
+  timeEntries: TimeEntry[],
+  workdayOverrides: { [date: string]: boolean }
+): { [date: string]: AggregateTimeEntries } {
   const timeEntriesByDate = timeEntries
     .map((entry) =>
       Object.assign(entry, {
@@ -95,7 +116,7 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
       })
     )
     .sort((a, b) => a.start.diff(b.start))
-    .reduce((result, entry) => {
+    .reduce((result: { [date: string]: AggregateTimeEntries }, entry: TimeEntry) => {
       const date = moment(entry.start).format('YYYY-MM-DD');
       const dataForDate = result[date] || {
         timeEntries: [],
@@ -103,7 +124,7 @@ function groupEntries(startDate, endDate, timeEntries, workdayOverrides) {
         hasRunningEntry: false,
       };
       dataForDate.timeEntries.push(entry);
-      dataForDate.duration += entry.duration;
+      dataForDate.duration = (dataForDate.duration ?? 0) + entry.duration;
       dataForDate.hasRunningEntry = dataForDate.hasRunningEntry || entry.isRunning;
 
       return Object.assign(result, { [date]: dataForDate });

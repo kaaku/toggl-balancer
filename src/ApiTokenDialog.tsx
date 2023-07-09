@@ -1,5 +1,4 @@
-import PropTypes from 'prop-types';
-import React, { Component } from 'react';
+import React, { ChangeEvent, Component } from 'react';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
@@ -11,8 +10,20 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
 
-export default class ApiTokenDialog extends Component {
-  constructor(props) {
+interface Props {
+  open: boolean;
+  mandatory: boolean;
+  oldApiToken?: string;
+  onClose: (result: { apiToken?: string; rememberMe?: boolean }) => void;
+}
+
+interface State {
+  apiToken?: string;
+  rememberMe?: boolean;
+}
+
+export default class ApiTokenDialog extends Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = {
       apiToken: props.oldApiToken,
@@ -24,7 +35,7 @@ export default class ApiTokenDialog extends Component {
     this.handleCancel = this.handleCancel.bind(this);
   }
 
-  handleChange(event) {
+  handleChange(event: ChangeEvent<HTMLInputElement>) {
     this.setState({ apiToken: event.target.value });
   }
 
@@ -40,7 +51,7 @@ export default class ApiTokenDialog extends Component {
   }
 
   render() {
-    const { open, mandatory } = this.props;
+    const { open = false, mandatory = false } = this.props;
     const { apiToken, rememberMe } = this.state;
 
     return (
@@ -80,16 +91,3 @@ export default class ApiTokenDialog extends Component {
     );
   }
 }
-
-ApiTokenDialog.propTypes = {
-  onClose: PropTypes.func.isRequired,
-  oldApiToken: PropTypes.string,
-  open: PropTypes.bool,
-  mandatory: PropTypes.bool,
-};
-
-ApiTokenDialog.defaultProps = {
-  oldApiToken: '',
-  open: true,
-  mandatory: false,
-};
