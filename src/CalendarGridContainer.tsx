@@ -8,8 +8,8 @@ import CalendarGrid from './CalendarGrid';
 import { AggregateTimeEntries } from './time-entries/TimeEntryStore';
 
 interface Props {
-  startDate: Moment;
-  endDate: Moment;
+  startDate?: Moment;
+  endDate?: Moment;
   timeEntriesByDate: { [date: string]: AggregateTimeEntries };
 }
 
@@ -43,7 +43,7 @@ function getDataByMonth(
 
 export default function CalendarGridContainer(props: Props) {
   const { startDate, endDate, timeEntriesByDate } = props;
-  if (startDate.isAfter(endDate)) {
+  if (!startDate || !endDate || startDate.isAfter(endDate)) {
     return null;
   }
 

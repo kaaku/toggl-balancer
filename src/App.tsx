@@ -18,8 +18,8 @@ import './styles.css';
 interface State {
   apiToken: string;
   showApiTokenDialog: boolean;
-  startDate: Moment;
-  endDate: Moment;
+  startDate?: Moment;
+  endDate?: Moment;
   timeEntryContext: TimeEntryContextType;
   error?: string;
 }
@@ -46,8 +46,8 @@ export default class App extends Component<unknown, State> {
     this.state = {
       apiToken,
       showApiTokenDialog: !apiToken,
-      startDate: dateRange.startDate,
-      endDate: dateRange.endDate,
+      startDate: dateRange?.startDate,
+      endDate: dateRange?.endDate,
       timeEntryContext: { timeEntriesByDate: {}, workdayOverrides, toggleWorkday: this.toggleWorkday },
     };
   }
@@ -79,8 +79,8 @@ export default class App extends Component<unknown, State> {
     this.setState(stateChange);
   }
 
-  handleDateRangeChange(dateRange: { startDate: Moment; endDate: Moment }) {
-    Object.entries(dateRange).forEach(([key, value]) => localStorage.setItem(key, value.format('YYYY-MM-DD')));
+  handleDateRangeChange(dateRange: { startDate?: Moment; endDate?: Moment }) {
+    Object.entries(dateRange).forEach(([key, value]) => localStorage.setItem(key, value?.format('YYYY-MM-DD') ?? ''));
     this.setState(dateRange);
   }
 
@@ -106,6 +106,9 @@ export default class App extends Component<unknown, State> {
 
   updateTimeEntries() {
     const { startDate, endDate, apiToken, timeEntryContext } = this.state;
+    if (!startDate || !endDate) {
+      return;
+    }
     try {
       timeEntryStore.fetchTimeEntries(startDate, endDate, apiToken, timeEntryContext.workdayOverrides).then(
         (result) =>
@@ -163,7 +166,7 @@ export default class App extends Component<unknown, State> {
           <Grid>
             <DateRangeSelector startDate={startDate} endDate={endDate} onChange={this.handleDateRangeChange} />
           </Grid>
-          {!startDate.isSame(endDate, 'month') && (
+          {!startDate?.isSame(endDate, 'month') && (
             <Grid xs={12}>
               <Typography variant="h2" align="center" sx={{ mt: 3 }}>
                 Total: <Duration duration={totalTimeDiff} useColors />
