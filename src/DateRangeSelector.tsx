@@ -1,10 +1,15 @@
 import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Grid from '@mui/material/Unstable_Grid2';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import Paper from '@mui/material/Paper';
-import PropTypes from 'prop-types';
 import React from 'react';
+
+interface Props {
+  startDate?: Moment;
+  endDate?: Moment;
+  onChange: (dateRange: { startDate?: Moment; endDate?: Moment }) => void;
+}
 
 const quickSelections = [
   {
@@ -31,7 +36,7 @@ const quickSelections = [
   },
 ];
 
-export function DateRangeSelector(props) {
+export function DateRangeSelector(props: Props) {
   const { startDate, endDate, onChange } = props;
   const currentYear = moment().year();
 
@@ -44,11 +49,12 @@ export function DateRangeSelector(props) {
             format={startDate && startDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
             value={startDate}
             maxDate={endDate}
-            autoOk
-            showTodayButton
+            slotProps={{
+              actionBar: { actions: ['today'] },
+            }}
             onChange={(date) =>
               onChange({
-                startDate: date,
+                startDate: date ?? undefined,
                 endDate,
               })
             }
@@ -60,12 +66,13 @@ export function DateRangeSelector(props) {
             format={endDate && endDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
             value={endDate}
             minDate={startDate}
-            autoOk
-            showTodayButton
+            slotProps={{
+              actionBar: { actions: ['today'] },
+            }}
             onChange={(date) =>
               onChange({
                 startDate,
-                endDate: date,
+                endDate: date ?? undefined,
               })
             }
           />
@@ -82,12 +89,4 @@ export function DateRangeSelector(props) {
   );
 }
 
-DateRangeSelector.propTypes = {
-  onChange: PropTypes.func.isRequired,
-  // eslint-disable-next-line react/require-default-props
-  startDate: PropTypes.instanceOf(moment),
-  // eslint-disable-next-line react/require-default-props
-  endDate: PropTypes.instanceOf(moment),
-};
-
-export const defaultDateRange = quickSelections.find((selection) => selection.default).getDateRange();
+export const defaultDateRange = quickSelections.find((selection) => selection.default)?.getDateRange();
