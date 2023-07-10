@@ -39,6 +39,8 @@ const quickSelections = [
 export function DateRangeSelector(props: Props) {
   const { startDate, endDate, onChange } = props;
   const currentYear = moment().year();
+  // Toggl Time Entry API only supports fetching data for the previous 90 days
+  const minDate = moment().subtract(91, 'days');
 
   return (
     <Paper sx={{ p: 5 }}>
@@ -48,6 +50,7 @@ export function DateRangeSelector(props: Props) {
             label="From"
             format={startDate && startDate.year() !== currentYear ? 'MMMM Do, YYYY' : 'MMMM Do'}
             value={startDate}
+            minDate={minDate}
             maxDate={endDate}
             slotProps={{
               actionBar: { actions: ['today'] },
