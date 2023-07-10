@@ -66,15 +66,15 @@ export default class App extends Component<unknown, State> {
     }
   }
 
-  handleDialogClose({ apiToken, rememberMe }: any) {
+  handleDialogClose(event: { apiToken?: string; rememberMe?: boolean }) {
     const stateChange = { showApiTokenDialog: false };
-    if (apiToken) {
-      if (rememberMe) {
-        localStorage.setItem('apiToken', apiToken);
+    if (event.apiToken) {
+      if (event.rememberMe) {
+        localStorage.setItem('apiToken', event.apiToken);
       } else {
         localStorage.removeItem('apiToken');
       }
-      Object.assign(stateChange, { apiToken });
+      Object.assign(stateChange, { apiToken: event.apiToken });
     }
     this.setState(stateChange);
   }
@@ -122,8 +122,8 @@ export default class App extends Component<unknown, State> {
             error: error.message,
           })
       );
-    } catch (e: any) {
-      this.setState({ error: e.message });
+    } catch (e) {
+      this.setState({ error: `Unknown error: ${e}` });
     }
   }
 
