@@ -32,8 +32,8 @@ jobs:
         uses: actions/configure-pages@v3
       - name: Build app
         run: |
-          npm install
-          npm run build
+          yarn install
+          yarn build
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
