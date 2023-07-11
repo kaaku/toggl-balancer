@@ -5,7 +5,7 @@ import Typography from '@mui/material/Typography';
 
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
-import { AggregateTimeEntries } from './time-entries/TimeEntryStore';
+import { AggregateTimeEntries } from './types';
 
 interface Props {
   startDate?: Moment;

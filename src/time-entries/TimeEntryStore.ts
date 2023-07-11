@@ -1,17 +1,5 @@
 import moment, { Moment } from 'moment';
-
-export interface TimeEntry {
-  start: Moment;
-  end: Moment;
-  duration: number;
-  isRunning: boolean;
-}
-
-export interface AggregateTimeEntries {
-  timeEntries: TimeEntry[];
-  duration: number | null;
-  hasRunningEntry: boolean;
-}
+import { AggregateTimeEntries, TimeEntry } from '../types';
 
 const BASE_URL = 'https://api.track.toggl.com/api/v9/me/time_entries';
 
