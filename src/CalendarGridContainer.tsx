@@ -5,11 +5,10 @@ import Typography from '@mui/material/Typography';
 
 import Duration from './Duration';
 import CalendarGrid from './CalendarGrid';
-import { AggregateTimeEntries } from './types';
+import { AggregateTimeEntries, DateRange } from './types';
 
 interface Props {
-  startDate?: Moment;
-  endDate?: Moment;
+  dateRange: DateRange;
   timeEntriesByDate: { [date: string]: AggregateTimeEntries };
 }
 
@@ -42,7 +41,10 @@ function getDataByMonth(
 }
 
 export default function CalendarGridContainer(props: Props) {
-  const { startDate, endDate, timeEntriesByDate } = props;
+  const {
+    dateRange: { startDate, endDate },
+    timeEntriesByDate,
+  } = props;
   if (!startDate || !endDate || startDate.isAfter(endDate)) {
     return null;
   }

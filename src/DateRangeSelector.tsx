@@ -1,14 +1,14 @@
 import Button from '@mui/material/Button';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import Grid from '@mui/material/Unstable_Grid2';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 import Paper from '@mui/material/Paper';
 import React from 'react';
+import { DateRange } from './types';
 
 interface Props {
-  startDate?: Moment;
-  endDate?: Moment;
-  onChange: (dateRange: { startDate?: Moment; endDate?: Moment }) => void;
+  dateRange: DateRange;
+  onChange: (dateRange: DateRange) => void;
 }
 
 const quickSelections = [
@@ -25,7 +25,6 @@ const quickSelections = [
       startDate: moment().startOf('month'),
       endDate: moment().endOf('month').startOf('day'),
     }),
-    default: true,
   },
   {
     title: 'This year',
@@ -36,8 +35,11 @@ const quickSelections = [
   },
 ];
 
-export function DateRangeSelector(props: Props) {
-  const { startDate, endDate, onChange } = props;
+export default function DateRangeSelector(props: Props) {
+  const {
+    dateRange: { startDate, endDate },
+    onChange,
+  } = props;
   const currentYear = moment().year();
   // Toggl Time Entry API only supports fetching data for the previous 90 days
   const minDate = moment().subtract(91, 'days');
@@ -57,7 +59,7 @@ export function DateRangeSelector(props: Props) {
             }}
             onChange={(date) =>
               onChange({
-                startDate: date ?? undefined,
+                startDate: date,
                 endDate,
               })
             }
@@ -75,7 +77,7 @@ export function DateRangeSelector(props: Props) {
             onChange={(date) =>
               onChange({
                 startDate,
-                endDate: date ?? undefined,
+                endDate: date,
               })
             }
           />
@@ -91,5 +93,3 @@ export function DateRangeSelector(props: Props) {
     </Paper>
   );
 }
-
-export const defaultDateRange = quickSelections.find((selection) => selection.default)?.getDateRange();

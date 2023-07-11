@@ -6,6 +6,11 @@ export interface AggregateTimeEntries {
   hasRunningEntry: boolean;
 }
 
+export interface DateRange {
+  startDate: Moment | null;
+  endDate: Moment | null;
+}
+
 export interface TimeEntry {
   start: Moment;
   end: Moment;
