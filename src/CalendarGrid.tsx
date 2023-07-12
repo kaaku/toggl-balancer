@@ -3,7 +3,7 @@ import moment, { Moment } from 'moment';
 import React from 'react';
 
 import CalendarCell from './CalendarCell';
-import { AggregateTimeEntries } from './time-entries/TimeEntryStore';
+import { AggregateTimeEntries } from './types';
 
 interface Props {
   year: number;

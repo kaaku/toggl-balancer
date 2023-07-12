@@ -1,5 +1,6 @@
 import React from 'react';
-import { AggregateTimeEntries } from './TimeEntryStore';
+
+import { AggregateTimeEntries } from '../types';
 
 export interface TimeEntryContextType {
   timeEntriesByDate: { [date: string]: AggregateTimeEntries };

@@ -1,17 +1,5 @@
 import moment, { Moment } from 'moment';
-
-export interface TimeEntry {
-  start: Moment;
-  end: Moment;
-  duration: number;
-  isRunning: boolean;
-}
-
-export interface AggregateTimeEntries {
-  timeEntries: TimeEntry[];
-  duration: number | null;
-  hasRunningEntry: boolean;
-}
+import { AggregateTimeEntries, DateRange, TimeEntry } from '../types';
 
 const BASE_URL = 'https://api.track.toggl.com/api/v9/me/time_entries';
 
@@ -19,15 +7,15 @@ const workdayDuration = moment.duration('7:30').asSeconds();
 
 // eslint-disable-next-line import/prefer-default-export
 export const timeEntryStore = {
-  fetchTimeEntries(startDate: Moment, endDate: Moment, apiToken: string, workdaySettings: { [date: string]: boolean }) {
-    if (!startDate || !endDate) {
+  fetchTimeEntries(dateRange: DateRange, apiToken: string, workdaySettings: { [date: string]: boolean }) {
+    if (!dateRange?.startDate || !dateRange?.endDate) {
       throw Error('Either start date or end date is required');
     } else if (!apiToken) {
       throw Error('API token is required');
     }
 
-    const start = moment(startDate).startOf('day');
-    const end = moment(endDate).add(1, 'day').startOf('day');
+    const start = moment(dateRange.startDate).startOf('day');
+    const end = moment(dateRange.endDate).add(1, 'day').startOf('day');
     if ((start && !start.isValid()) || (end && !end.isValid())) {
       throw Error('Start date and/or end date were invalid');
     }
