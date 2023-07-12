@@ -15,9 +15,16 @@ interface Props {
   mandatory: boolean;
   oldApiToken?: string;
   onClose: (result: { apiToken?: string; rememberMe?: boolean }) => void;
+  onDismiss?: () => void;
 }
 
-export default function ApiTokenDialog({ open, mandatory, oldApiToken, onClose = () => {} }: Props) {
+export default function ApiTokenDialog({
+  open,
+  mandatory,
+  oldApiToken,
+  onClose = () => {},
+  onDismiss = () => {},
+}: Props) {
   const [apiToken, setApiToken] = useState(oldApiToken);
   const [rememberMe, setRememberMe] = useState(true);
 
@@ -47,7 +54,7 @@ export default function ApiTokenDialog({ open, mandatory, oldApiToken, onClose =
         />
       </DialogContent>
       <DialogActions>
-        {!mandatory && <Button onClick={() => onClose({})}>Cancel</Button>}
+        {!mandatory && <Button onClick={() => onDismiss()}>Cancel</Button>}
         <Button variant="contained" onClick={() => onClose({ apiToken, rememberMe })} disabled={!apiToken}>
           Submit
         </Button>

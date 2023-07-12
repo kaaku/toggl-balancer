@@ -116,7 +116,13 @@ export default function App() {
 
   return (
     <Box sx={{ padding: 4 }}>
-      <ApiTokenDialog open={apiTokenDialogOpen} mandatory={false} oldApiToken={apiToken} onClose={handleDialogClose} />
+      <ApiTokenDialog
+        open={apiTokenDialogOpen}
+        mandatory={false}
+        oldApiToken={apiToken}
+        onClose={handleDialogClose}
+        onDismiss={() => setApiTokenDialogOpen(false)}
+      />
       <Button
         sx={{ position: 'absolute', top: (theme) => theme.spacing(2), right: (theme) => theme.spacing(2) }}
         onClick={() => setApiTokenDialogOpen(true)}
