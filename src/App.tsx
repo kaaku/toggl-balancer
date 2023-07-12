@@ -46,6 +46,30 @@ function readCachedWorkdayOverrides(): { [date: string]: boolean } | null {
   }
 }
 
+function writeStateToLocalStorage(
+  apiToken: string | null,
+  dateRange: DateRange,
+  workdayOverrides: { [date: string]: boolean }
+) {
+  if (apiToken) {
+    localStorage.setItem('apiToken', apiToken);
+  } else {
+    localStorage.removeItem('apiToken');
+  }
+  Object.entries(dateRange).forEach(([key, value]) => {
+    if (value) {
+      localStorage.setItem(key, value?.format('YYYY-MM-DD') ?? '');
+    } else {
+      localStorage.removeItem(key);
+    }
+  });
+  if (workdayOverrides && Object.keys(workdayOverrides).length > 0) {
+    localStorage.setItem('workdayOverrides', JSON.stringify(workdayOverrides));
+  } else {
+    localStorage.removeItem('workdayOverrides');
+  }
+}
+
 export default function App() {
   const [apiToken, setApiToken] = useState(readCachedApiToken());
   const [apiTokenDialogOpen, setApiTokenDialogOpen] = useState(!apiToken);
@@ -69,23 +93,22 @@ export default function App() {
     }
   }, [apiToken, dateRange, workdayOverrides]);
 
-  const handleDialogClose = (event: { apiToken?: string; rememberMe?: boolean }) => {
+  useEffect(
+    () => writeStateToLocalStorage(apiToken, dateRange, workdayOverrides),
+    [apiToken, dateRange, workdayOverrides]
+  );
+
+  const handleDialogClose = (newApiToken: string) => {
     setApiTokenDialogOpen(false);
-    setApiToken(event.apiToken ?? null);
-    if (event.apiToken) {
-      if (event.rememberMe) {
-        localStorage.setItem('apiToken', event.apiToken);
-      } else {
-        localStorage.removeItem('apiToken');
-      }
-    }
+    setApiToken(newApiToken ?? null);
   };
 
-  const handleDateRangeChange = (newDateRange: DateRange) => {
-    Object.entries(newDateRange).forEach(([key, value]) =>
-      localStorage.setItem(key, value?.format('YYYY-MM-DD') ?? '')
-    );
-    setDateRange(newDateRange);
+  const handleLogout = () => {
+    setApiToken(null);
+    setApiTokenDialogOpen(true);
+    setDateRange(defaultDateRange);
+    setTimeEntriesByDate({});
+    setWorkdayOverrides({});
   };
 
   const toggleWorkday = (date: string) => {
@@ -93,7 +116,6 @@ export default function App() {
     const newWorkdayOverrides = { ...workdayOverrides, [date]: !oldSetting };
     const refreshedTimeEntries = timeEntryStore.refreshDurations(timeEntriesByDate, newWorkdayOverrides);
 
-    localStorage.setItem('workdayOverrides', JSON.stringify(newWorkdayOverrides));
     setTimeEntriesByDate(refreshedTimeEntries);
     setWorkdayOverrides(newWorkdayOverrides);
   };
@@ -125,13 +147,13 @@ export default function App() {
       />
       <Button
         sx={{ position: 'absolute', top: (theme) => theme.spacing(2), right: (theme) => theme.spacing(2) }}
-        onClick={() => setApiTokenDialogOpen(true)}
+        onClick={handleLogout}
       >
-        Change API Token
+        Log out
       </Button>
       <Grid container justifyContent="center" sx={{ mt: 5, mb: 10 }}>
         <Grid>
-          <DateRangeSelector dateRange={dateRange} onChange={handleDateRangeChange} />
+          <DateRangeSelector dateRange={dateRange} onChange={(newDateRange) => setDateRange(newDateRange)} />
         </Grid>
         {!dateRange?.startDate?.isSame(dateRange?.endDate, 'month') && (
           <Grid xs={12}>

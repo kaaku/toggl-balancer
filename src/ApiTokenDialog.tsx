@@ -1,12 +1,10 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Icon from '@mui/material/Icon';
 import TextField from '@mui/material/TextField';
 
@@ -14,7 +12,7 @@ interface Props {
   open: boolean;
   mandatory: boolean;
   oldApiToken?: string;
-  onClose: (result: { apiToken?: string; rememberMe?: boolean }) => void;
+  onClose: (apiToken: string) => void;
   onDismiss?: () => void;
 }
 
@@ -25,8 +23,7 @@ export default function ApiTokenDialog({
   onClose = () => {},
   onDismiss = () => {},
 }: Props) {
-  const [apiToken, setApiToken] = useState(oldApiToken);
-  const [rememberMe, setRememberMe] = useState(true);
+  const [apiToken, setApiToken] = useState(oldApiToken ?? '');
 
   return (
     <Dialog open={open} disableEscapeKeyDown={mandatory} aria-labelledby="form-dialog-title">
@@ -48,14 +45,10 @@ export default function ApiTokenDialog({
           value={apiToken}
           onChange={(e) => setApiToken(e.target.value)}
         />
-        <FormControlLabel
-          control={<Checkbox checked={rememberMe} onChange={(e, checked) => setRememberMe(checked)} />}
-          label="Remember me"
-        />
       </DialogContent>
       <DialogActions>
         {!mandatory && <Button onClick={() => onDismiss()}>Cancel</Button>}
-        <Button variant="contained" onClick={() => onClose({ apiToken, rememberMe })} disabled={!apiToken}>
+        <Button variant="contained" onClick={() => onClose(apiToken)} disabled={!apiToken}>
           Submit
         </Button>
       </DialogActions>
